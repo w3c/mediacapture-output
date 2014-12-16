@@ -58,7 +58,7 @@
       <ol class="method-algorithm">
         <li><p>If <code>sinkId</code> and the <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>sinkId</code></a> attribute are the same object, return a resolved promise.</p></li>
         <li><p>If the <code>sinkId</code> does not match any audio output device identified by <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#dom-mediadevices-enumeratedevices"><code>enumerateDevices()</code></a>, return a promise rejected with a new <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#notfounderror"><code>NotFoundError</code></a>.</p></li>
-        <li><p>If application is not authorized play audio through the device identified by the given sinkId, return a promise rejected with a new <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#securityerror"><code>SecurityError</code></a>.</p></li>
+        <li><p>If application is not authorized to play audio through the device identified by the given sinkId, return a promise rejected with a new <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#securityerror"><code>SecurityError</code></a>.</p></li>
         <li><p>Let <var>promise</var> be a new promise.</p></li>
         <li><p>Run the following steps asynchronously:</p>
           <ol>
@@ -78,7 +78,7 @@
         <section id="algorithms-sink-unavailable">
           <h4>Sink no longer available</h4>
           <p>The audio device associated with <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>HTMLMediaElement.sinkId</code></a> may become unavailable, for example if it is unplugged.</p>
-          <p>When the audio device identified by the <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>sinkId</code></a> attribute is no longer available, the user agent must take no action. For example, if the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false when the device identified by the sinkId is no longer available, then playback will continue as normal. Audio will not be rendered because the device to which it's attached is unavailable.</p>
+          <p>When the audio device identified by the <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>sinkId</code></a> attribute is no longer available, the user agent must take no action. For example, if the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false when the device identified by the sinkId is no longer available, then playback will continue as normal. Of course, audio will not be rendered because the device to which the media element is attached is unavailable.</p>
           <p>
             <em>The following paragraph is non-normative.</em>
           </p>
@@ -86,7 +86,7 @@
         </section>
         <section id="algorithms-new-sink-available">
           <h4>New sink available</h4>
-          <p>New audio devices may become available to the user agent, or an audio device (identified by <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>HTMLMediaElement.sinkId</code></a>) that had previously become <a href="#algorithms-sink-unavailable">unavailable</a> may become available again, for example if it is unplugged then plugged back in.</a></p>
+          <p>New audio devices may become available to the user agent, or an audio device (identified by <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>HTMLMediaElement.sinkId</code></a>) that had previously become <a href="#algorithms-sink-unavailable">unavailable</a> may become available again, for example, if it is unplugged and later plugged back in.</a></p>
           <p>In this scenario, the user agent must run the following steps:</p>
           <ol class="method-algorithm">
             <li><p>Let <var>sinkId</var> be the identifier for the newly available device.</p></li>
@@ -147,13 +147,13 @@
       <h2>Privacy Considerations</h2>
       <section id="privacy-consent">
         <h3>Consent</h3>
-        <p>This document extends the Web platform with the ability to direct audio output to play out non-default devices when authorization is given. Authorization is necessary because playing audio out of a non-default device may be unexpected behavior to the user and may cause a nuisance. For example, suppose a user is in a library or other quiet public place where she is using a laptop with system audio directed to a USB headset. Her expectation is that the laptop’s audio is private and she will not disturb others. If any Web application can direct output through arbitrary output devices, a mischievous website may play loud audio out of the laptop’s external speakers without the user’s consent.</p>
-        <p>To prevent these kinds of nuisance scenarios, the user agent must acquire the user’s consent to access non-default devices. This would prevent the library example outlined earlier, because the application is not authorized and therefore could not play out audio unexpectedly.</p>
+        <p>This document extends the Web platform with the ability to direct audio output to non-default devices, when authorization is given. Authorization is necessary because playing audio out of a non-default device may be unexpected behavior to the user, and may cause a nuisance. For example, suppose a user is in a library or other quiet public place where she is using a laptop with system audio directed to a USB headset. Her expectation is that the laptop’s audio is private and she will not disturb others. If any Web application can direct audio output through arbitrary output devices, a mischievous website may play loud audio out of the laptop’s external speakers without the user’s consent.</p>
+        <p>To prevent these kinds of nuisance scenarios, the user agent must acquire the user’s consent to access non-default audio output devices. This would prevent the library example outlined earlier, because the application would not be authorized to play out audio from the system speakers.</p>
       </section>
       <section id="privacy-obtaining-consent">
         <h3>Obtaining Consent</h3>
-        <p>The user agent may explicitly obtain user consent to play audio out of non-default speakers; the details of this process are left to the implementations.</p>
-        <p>However, implementations must provide implicit consent to access non-default audio output devices via the <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDevices-getUserMedia-void-MediaStreamConstraints-constraints-NavigatorUserMediaSuccessCallback-successCallback-NavigatorUserMediaErrorCallback-errorCallback"><code>getUserMedia()</code></a> permission prompt: Opening an audio input device via <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDevices-getUserMedia-void-MediaStreamConstraints-constraints-NavigatorUserMediaSuccessCallback-successCallback-NavigatorUserMediaErrorCallback-errorCallback"><code>getUserMedia()</code></a> authorizes access to any output devices with the same <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDeviceInfo-groupId"><code>MediaDeviceInfo.groupId</code></a>.</p>
+        <p>The user agent may explicitly obtain user consent to play audio out of non-default output devices; the details of this process are left to the implementation.</p>
+        <p>However, implementations must support implicit consent via the <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDevices-getUserMedia-void-MediaStreamConstraints-constraints-NavigatorUserMediaSuccessCallback-successCallback-NavigatorUserMediaErrorCallback-errorCallback"><code>getUserMedia()</code></a> permission prompt; when an audio input device is authorized and opened via <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDevices-getUserMedia-void-MediaStreamConstraints-constraints-NavigatorUserMediaSuccessCallback-successCallback-NavigatorUserMediaErrorCallback-errorCallback"><code>getUserMedia()</code></a>, this also authorizes access to any associated audio output devices (i.e., those with the same <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDeviceInfo-groupId"><code>MediaDeviceInfo.groupId</code></a>). This conviently handles the common case of wanting to route both input and output audio through a headset or speakerphone device.</p>
       </section>
     </section>
 
