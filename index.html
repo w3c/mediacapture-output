@@ -110,28 +110,39 @@
       <section>
         <h3>Implementation Options</h3>
         <p>There are many ways that this functionality could be extended to Web Audio. This section lists several different options and is open for discussion.</p>
+        <p>See also <a href="https://github.com/WebAudio/web-audio-api/issues/445"/>this issue</a> in the Web Audio issue tracker regarding the handling of output devices by Web Audio.</a>
 
         <section>
+          <h4>Constructor argument</h4>
+          <p>Option 1: <code>AudioContext</code> constructor argument</p>
+          <ul>
+            <li>The sink ID is passed as an argument to the <a href="http://webaudio.github.io/web-audio-api/#the-audiocontext-interface"><code>AudioContext</code></a> ctor, e.g. <br><br><code>new AudioContext({ sinkId: requestedSinkId });</code><br><br> By requiring the sink ID to be set at construction time, this simplifies the implementation, since the output sample rate is fixed.</li>
+            <li>Limitation: this implies the graph must be recreated if the output device changes.</li>
+            <li>Limitation: can’t play audio out of multiple devices at once (assuming application is written with a standard single <a href="http://webaudio.github.io/web-audio-api/#the-audiocontext-interface"><code>AudioContext</code></a>).
+            </li>
+          </ul>
+        </section>
+        <section>
           <h4 id="webaudio-option1"><code>setSinkId()</code></h4>
-          <p>Option 1a: <code>AudioContext.setSinkId()</code></p>
+          <p>Option 2a: <code>AudioContext.setSinkId()</code></p>
           <ul>
             <li>Same as <a href="#widl-HTMLMediaElement-setSinkId"><code>HTMLMediaElement.setSinkId()</code></a>, but added to <a href="http://webaudio.github.io/web-audio-api/#the-audiocontext-interface"><code>AudioContext</code></a> as well.</li>
             <li>Limitation: can’t play audio out of multiple devices at once (assuming application is written with a standard single <a href="http://webaudio.github.io/web-audio-api/#the-audiocontext-interface"><code>AudioContext</code></a>).</li>
           </ul>
-          <p>Option 1b: <code>AudioDestinationNode.setSinkId()</code></p>
+          <p>Option 2b: <code>AudioDestinationNode.setSinkId()</code></p>
           <ul>
-            <li>Same as 1a but on <a href="http://webaudio.github.io/web-audio-api/#the-audiodestinationnode-interface"><code>AudioDestinationNode</code></a> instead</li>
+            <li>Same as 2a, but on <a href="http://webaudio.github.io/web-audio-api/#the-audiodestinationnode-interface"><code>AudioDestinationNode</code></a> instead.</li>
           </ul>
         </section>
         <section>
           <h4>addSinkId()/removeSinkId()</h4>
-          <p>Option 2a: <code>AudioContext.addSinkId()</code>/<code>removeSinkId()</code></p>
+          <p>Option 3a: <code>AudioContext.addSinkId()</code>/<code>removeSinkId()</code></p>
           <ul>
             <li>Benefit over <a href="#webaudio-option-1">setSinkId</a>: Audio can be piped through multiple devices.</li>
           </ul>
-          <p>Option 2b: <code>AudioDestinationNode.addSinkId()</code>/<code>removeSinkId()</code></p>
+          <p>Option 3b: <code>AudioDestinationNode.addSinkId()</code>/<code>removeSinkId()</code></p>
           <ul>
-            <li>Same as 2b but on <a href="http://webaudio.github.io/web-audio-api/#the-audiodestinationnode-interface"><code>AudioDestinationNode</code></a> instead</li>
+            <li>Same as 3a but on <a href="http://webaudio.github.io/web-audio-api/#the-audiodestinationnode-interface"><code>AudioDestinationNode</code></a> instead.</li>
           </ul>
         </section>
         <section>
