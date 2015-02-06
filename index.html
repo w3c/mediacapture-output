@@ -41,7 +41,7 @@
       <dl title='partial interface HTMLMediaElement : EventTarget' class='idl'>
         <dt>readonly attribute DOMString sinkId</dt>
         <dd>
-        The unique ID of the audio device through which output is being delivered, or empty string if it is using the user agent default. This ID should be one of the <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDeviceInfo-deviceId"><code>MediaDeviceInfo.deviceId</code></a> values returned from <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDevices-enumerateDevices-void-MediaDeviceInfoCallback-resultCallback"><code>MediaDevices.enumerateDevices()</code></a> [[!GETUSERMEDIA]].
+        The unique ID of the audio device through which output is being delivered, or empty string if it is using the user agent default. This ID should be one of the <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDeviceInfo-deviceId"><code>MediaDeviceInfo.deviceId</code></a> values returned from <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDevices-enumerateDevices-void-MediaDeviceInfoCallback-resultCallback"><code>MediaDevices.enumerateDevices()</code></a> [[!GETUSERMEDIA]], or one of the predefined IDs listed below.
         </dd>
         <dt>Promise&lt;void&gt; setSinkId ()</dt>
         <dd>
@@ -116,7 +116,7 @@
           <h4>Constructor argument</h4>
           <p>Option 1: <code>AudioContext</code> constructor argument</p>
           <ul>
-            <li>The sink ID is passed as an argument to the <a href="http://webaudio.github.io/web-audio-api/#the-audiocontext-interface"><code>AudioContext</code></a> ctor, e.g. <br><br><code>new AudioContext({ sinkId: requestedSinkId });</code><br><br> By requiring the sink ID to be set at construction time, this simplifies the implementation, since the output sample rate is fixed.</li>
+            <li>The sink ID is passed as an argument to the <a href="http://webaudio.github.io/web-audio-api/#the-audiocontext-interface"><code>AudioContext</code></a> constructor, e.g. <br><br><code>new AudioContext({ sinkId: requestedSinkId });</code><br><br> By requiring the sink ID to be set at construction time, this simplifies the implementation, since the output sample rate is fixed.</li>
             <li>Limitation: this implies the graph must be recreated if the output device changes.</li>
             <li>Limitation: can’t play audio out of multiple devices at once (assuming application is written with a standard single <a href="http://webaudio.github.io/web-audio-api/#the-audiocontext-interface"><code>AudioContext</code></a>).
             </li>
@@ -154,16 +154,47 @@
       </section>
     </section>
 
+    <section id="predefined-ids">
+      <h2>Predefined Device IDs</h2>
+      <p>User agents must also support the following predefined pseudo-identifiers
+      which reference an abstract device. For example, if the application wants to
+      route audio to a headset, but doesn't care exactly which headset, it can
+      use the predefined id for the system communications device.
+      <section>
+        <h3>MediaDeviceId Enum</h3>
+
+        <dl class="idl" title="enum MediaDeviceId">
+          <dt>id-multimedia</dt>
+
+          <dd>Indicates the system multimedia playout device.
+          This is the default, i.e., equivalent to not setting the sink id,
+          or setting it to "".
+          </dd>
+
+          <dt>id-communications</dt>
+
+          <dd>Indicates the system audio communications device, if one exists,
+          typically a headset of some sort. [NOTE: what should happen if the
+          system does not support this concept, but does know about headsets?]
+          </dd>
+        </dl>
+      </section>
+    </section>
+
     <section id="privacy-considerations">
       <h2>Privacy Considerations</h2>
       <section id="privacy-consent">
         <h3>Consent</h3>
         <p>This document extends the Web platform with the ability to direct audio output to non-default devices, when authorization is given. Authorization is necessary because playing audio out of a non-default device may be unexpected behavior to the user, and may cause a nuisance. For example, suppose a user is in a library or other quiet public place where she is using a laptop with system audio directed to a USB headset. Her expectation is that the laptop’s audio is private and she will not disturb others. If any Web application can direct audio output through arbitrary output devices, a mischievous website may play loud audio out of the laptop’s external speakers without the user’s consent.</p>
         <p>To prevent these kinds of nuisance scenarios, the user agent must acquire the user’s consent to access non-default audio output devices. This would prevent the library example outlined earlier, because the application would not be authorized to play out audio from the system speakers.</p>
+        <p>The default audio output device is always authorized.</p>
       </section>
       <section id="privacy-obtaining-consent">
         <h3>Obtaining Consent</h3>
-        <p>The user agent may explicitly obtain user consent to play audio out of non-default output devices; the details of this process are left to the implementation.</p>
+        <p>The user agent may explicitly obtain user consent to play audio out of
+        non-default output devices; the details of this process are left to the implementation.
+        For example, one approach could be to add an explicit user prompt of the form
+        "example.com wants to access all your sound output devices".</p>
         <p>However, implementations must support implicit consent via the <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDevices-getUserMedia-void-MediaStreamConstraints-constraints-NavigatorUserMediaSuccessCallback-successCallback-NavigatorUserMediaErrorCallback-errorCallback"><code>getUserMedia()</code></a> permission prompt; when an audio input device is authorized and opened via <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDevices-getUserMedia-void-MediaStreamConstraints-constraints-NavigatorUserMediaSuccessCallback-successCallback-NavigatorUserMediaErrorCallback-errorCallback"><code>getUserMedia()</code></a>, this also authorizes access to any associated audio output devices (i.e., those with the same <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDeviceInfo-groupId"><code>MediaDeviceInfo.groupId</code></a>). This conviently handles the common case of wanting to route both input and output audio through a headset or speakerphone device.</p>
       </section>
     </section>
