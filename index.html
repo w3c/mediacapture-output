@@ -126,7 +126,7 @@
           <h4 id="webaudio-option1"><code>setSinkId()</code></h4>
           <p>Option 2a: <code>AudioContext.setSinkId()</code></p>
           <ul>
-            <li>Same as <a href="#widl-HTMLMediaElement-setSinkId"><code>HTMLMediaElement.setSinkId()</code></a>, but added to <a href="http://webaudio.github.io/web-audio-api/#the-audiocontext-interface"><code>AudioContext</code></a> as well.</li>
+            <li>Same as <a href="#widl-HTMLMediaElement-setSinkId-Promise-void--DOMString-sinkId"><code>HTMLMediaElement.setSinkId()</code></a>, but added to <a href="http://webaudio.github.io/web-audio-api/#the-audiocontext-interface"><code>AudioContext</code></a> as well.</li>
             <li>Limitation: can’t play audio out of multiple devices at once (assuming application is written with a standard single <a href="http://webaudio.github.io/web-audio-api/#the-audiocontext-interface"><code>AudioContext</code></a>).</li>
           </ul>
           <p>Option 2b: <code>AudioDestinationNode.setSinkId()</code></p>
@@ -138,7 +138,7 @@
           <h4>addSinkId()/removeSinkId()</h4>
           <p>Option 3a: <code>AudioContext.addSinkId()</code>/<code>removeSinkId()</code></p>
           <ul>
-            <li>Benefit over <a href="#webaudio-option-1">setSinkId</a>: Audio can be piped through multiple devices.</li>
+            <li>Benefit over <a href="#webaudio-option1">setSinkId</a>: Audio can be piped through multiple devices.</li>
           </ul>
           <p>Option 3b: <code>AudioDestinationNode.addSinkId()</code>/<code>removeSinkId()</code></p>
           <ul>
@@ -148,7 +148,7 @@
         <section>
           <h4>No change to spec</h4>
           <ul>
-            <li>Use <a href="http://webaudio.github.io/web-audio-api/#widl-AudioContext-createMediaStreamDestination-MediaStreamAudioDestinationNode"><code>createMediaStreamDestination()</code></a> and attach to <a href="http://www.w3.org/TR/html5/embedded-content-0.html#htmlmediaelement"><code>HTMLMediaElements</code></a> via <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-HTMLMediaElement-srcObject"></code>srcObject</code></a>, and use <a href="#widl-HTMLMediaElement-setSinkId"><code>HTMLMediaElement.setSinkId()</code></a> exclusively.</li>
+            <li>Use <a href="http://webaudio.github.io/web-audio-api/#widl-AudioContext-createMediaStreamDestination-MediaStreamAudioDestinationNode"><code>createMediaStreamDestination()</code></a> and attach to <a href="http://www.w3.org/TR/html5/embedded-content-0.html#htmlmediaelement"><code>HTMLMediaElements</code></a> via <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-HTMLMediaElement-srcObject"></code>srcObject</code></a>, and use <a href="#widl-HTMLMediaElement-setSinkId-Promise-void--DOMString-sinkId"><code>HTMLMediaElement.setSinkId()</code></a> exclusively.</li>
           </ul>
         </section>
       </section>
