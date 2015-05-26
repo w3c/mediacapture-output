@@ -38,7 +38,7 @@
     <section id="htmlmediaelement-extensions">
       <h2><a href="#idl-def-HTMLMediaElement" class="idlType"><code>HTMLMediaElement</code></a> Extensions</h2>
       <p>This section specifies additions to the <a href="http://www.w3.org/TR/html5/embedded-content-0.html#htmlmediaelement"><code>HTMLMediaElement</code></a> [[!HTML5]] when the Audio Output Devices API is supported.</p>
-      <dl title='partial interface HTMLMediaElement : EventTarget' class='idl'>
+      <dl title='partial interface HTMLMediaElement' class='idl'>
         <dt>readonly attribute DOMString sinkId</dt>
         <dd>
         The unique ID of the audio device through which output is being delivered, or empty string if it is using the user agent default. This ID should be one of the <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDeviceInfo-deviceId"><code>MediaDeviceInfo.deviceId</code></a> values returned from <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDevices-enumerateDevices-void-MediaDeviceInfoCallback-resultCallback"><code>MediaDevices.enumerateDevices()</code></a> [[!GETUSERMEDIA]], or one of the predefined IDs listed below.
