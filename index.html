@@ -38,7 +38,7 @@
     <section id="htmlmediaelement-extensions">
       <h2><a href="#idl-def-HTMLMediaElement" class="idlType"><code>HTMLMediaElement</code></a> Extensions</h2>
       <p>This section specifies additions to the <a href="http://www.w3.org/TR/html5/embedded-content-0.html#htmlmediaelement"><code>HTMLMediaElement</code></a> [[!HTML5]] when the Audio Output Devices API is supported.</p>
-      <dl title='partial interface HTMLMediaElement : EventTarget' class='idl'>
+      <dl title='partial interface HTMLMediaElement' class='idl'>
         <dt>readonly attribute DOMString sinkId</dt>
         <dd>
         The unique ID of the audio device through which output is being delivered, or empty string if it is using the user agent default. This ID should be one of the <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDeviceInfo-deviceId"><code>MediaDeviceInfo.deviceId</code></a> values returned from <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDevices-enumerateDevices-void-MediaDeviceInfoCallback-resultCallback"><code>MediaDevices.enumerateDevices()</code></a> [[!GETUSERMEDIA]], or one of the predefined IDs listed below.
@@ -57,13 +57,13 @@
       <p>When this method is invoked, the user agent must run the following steps:</p>
       <ol class="method-algorithm">
         <li><p>If <code>sinkId</code> and the <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>sinkId</code></a> attribute are the same object, return a resolved promise.</p></li>
-        <li><p>If the <code>sinkId</code> does not match any audio output device identified by <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#dom-mediadevices-enumeratedevices"><code>enumerateDevices()</code></a>, return a promise rejected with a new <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#notfounderror"><code>NotFoundError</code></a>.</p></li>
-        <li><p>If application is not authorized to play audio through the device identified by the given sinkId, return a promise rejected with a new <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#securityerror"><code>SecurityError</code></a>.</p></li>
         <li><p>Let <var>promise</var> be a new promise.</p></li>
         <li><p>Run the following steps asynchronously:</p>
           <ol>
+            <li><p>If <code>sinkId</code> does not match any audio output device identified by <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#dom-mediadevices-enumeratedevices"><code>enumerateDevices()</code></a>, reject <var>promise</var> with a new <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#notfounderror"><code>NotFoundError</code></a>.</p></li>
+            <li><p>If application is not authorized to play audio through the device identified by <code>sinkId</code>, reject <var>promise</var> with a new <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#securityerror"><code>SecurityError</code></a>.</p></li>
             <li><p>Associate the audio output device represented by <code>sinkId</code> with this object for playout.</p></li>
-            <li><p>If the preceding step failed, return a rejected promise.</p></li>
+            <li><p>If the preceding step failed, reject <var>promise</var> with a new <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#aborterror"><code>AbortError</code></a>.</p></li>
             <li><p>If the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false, stop playing this object's audio out of the device represented by the <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>sinkId</code></a> attribute.</p></li>
             <li><p>Set the <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>sinkId</code></a> attribute to <code>sinkId</code>.</p></li>
             <li><p>If the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false, start playing this object's audio out of the device represented by <code>sinkId</code>.</p></li>
@@ -106,51 +106,18 @@
 
     <section id="webaudio-extensions">
       <h2><a href="http://webaudio.github.io/web-audio-api/">Web Audio API</a> Extensions</h2>
-      <p>This is a work in progress. The following section discusses the options for additions to and modifications of the <a href="http://webaudio.github.io/web-audio-api/">Web Audio API</a> [[!WEBAUDIO]] when the Audio Output Devices API is supported.</p>
+      <p>This is a work in progress. This section discusses modifications of the <a href="http://webaudio.github.io/web-audio-api/">Web Audio API</a> [[!WEBAUDIO]] when the Audio Output Devices API is supported.</p>
       <section>
-        <h3>Implementation Options</h3>
-        <p>There are many ways that this functionality could be extended to Web Audio. This section lists several different options and is open for discussion.</p>
-        <p>See also <a href="https://github.com/WebAudio/web-audio-api/issues/445"/>this issue</a> in the Web Audio issue tracker regarding the handling of output devices by Web Audio.</a>
-
-        <section>
-          <h4>Constructor argument</h4>
-          <p>Option 1: <code>AudioContext</code> constructor argument</p>
+        <h3><code>AudioContext</code> constructor argument</h3>
+          The sink ID is passed as an argument to the <a href="http://webaudio.github.io/web-audio-api/#the-audiocontext-interface"><code>AudioContext</code></a> constructor, e.g., <br><br><code>new AudioContext({ sinkId: requestedSinkId });</code><br>
           <ul>
-            <li>The sink ID is passed as an argument to the <a href="http://webaudio.github.io/web-audio-api/#the-audiocontext-interface"><code>AudioContext</code></a> constructor, e.g. <br><br><code>new AudioContext({ sinkId: requestedSinkId });</code><br><br> By requiring the sink ID to be set at construction time, this simplifies the implementation, since the output sample rate is fixed.</li>
-            <li>Limitation: this implies the graph must be recreated if the output device changes.</li>
-            <li>Limitation: can’t play audio out of multiple devices at once (assuming application is written with a standard single <a href="http://webaudio.github.io/web-audio-api/#the-audiocontext-interface"><code>AudioContext</code></a>).
-            </li>
+            <li>If no <code>sinkId</code> is provided, use the default device of the user agent.</li>
+            <li>If <code>sinkId</code> is the empty string, use the default device of the user agent.</li>
+            <li>If the <code>sinkId</code> does not match any audio output device identified by <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#dom-mediadevices-enumeratedevices"><code>enumerateDevices()</code></a>, throw a DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#notfounderror"><code>NotFoundError</code></a>.</li>
+            <li>If the application is not authorized to play audio through the device identified by the given <code>sinkId</code>, throw a <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#securityerror"><code>SecurityError</code></a>.</li>
+            <li>If the device identified by the given <code>sinkId</code> cannot be used due to a unspecified error, throw a <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#aborterror"><code>AbortError</code></a>.</li>
           </ul>
-        </section>
-        <section>
-          <h4 id="webaudio-option1"><code>setSinkId()</code></h4>
-          <p>Option 2a: <code>AudioContext.setSinkId()</code></p>
-          <ul>
-            <li>Same as <a href="#widl-HTMLMediaElement-setSinkId-Promise-void--DOMString-sinkId"><code>HTMLMediaElement.setSinkId()</code></a>, but added to <a href="http://webaudio.github.io/web-audio-api/#the-audiocontext-interface"><code>AudioContext</code></a> as well.</li>
-            <li>Limitation: can’t play audio out of multiple devices at once (assuming application is written with a standard single <a href="http://webaudio.github.io/web-audio-api/#the-audiocontext-interface"><code>AudioContext</code></a>).</li>
-          </ul>
-          <p>Option 2b: <code>AudioDestinationNode.setSinkId()</code></p>
-          <ul>
-            <li>Same as 2a, but on <a href="http://webaudio.github.io/web-audio-api/#the-audiodestinationnode-interface"><code>AudioDestinationNode</code></a> instead.</li>
-          </ul>
-        </section>
-        <section>
-          <h4>addSinkId()/removeSinkId()</h4>
-          <p>Option 3a: <code>AudioContext.addSinkId()</code>/<code>removeSinkId()</code></p>
-          <ul>
-            <li>Benefit over <a href="#webaudio-option1">setSinkId</a>: Audio can be piped through multiple devices.</li>
-          </ul>
-          <p>Option 3b: <code>AudioDestinationNode.addSinkId()</code>/<code>removeSinkId()</code></p>
-          <ul>
-            <li>Same as 3a but on <a href="http://webaudio.github.io/web-audio-api/#the-audiodestinationnode-interface"><code>AudioDestinationNode</code></a> instead.</li>
-          </ul>
-        </section>
-        <section>
-          <h4>No change to spec</h4>
-          <ul>
-            <li>Use <a href="http://webaudio.github.io/web-audio-api/#widl-AudioContext-createMediaStreamDestination-MediaStreamAudioDestinationNode"><code>createMediaStreamDestination()</code></a> and attach to <a href="http://www.w3.org/TR/html5/embedded-content-0.html#htmlmediaelement"><code>HTMLMediaElements</code></a> via <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-HTMLMediaElement-srcObject"></code>srcObject</code></a>, and use <a href="#widl-HTMLMediaElement-setSinkId-Promise-void--DOMString-sinkId"><code>HTMLMediaElement.setSinkId()</code></a> exclusively.</li>
-          </ul>
-        </section>
+        Requiring the sink ID to be set at construction time simplifies the implementation, since the output sample rate is fixed.
       </section>
     </section>
 

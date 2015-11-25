@@ -36,7 +36,7 @@ var respecConfig = {
        // { name: "Your Name", url: "http://example.org/",
        // company: "Your Company", companyURL: "http://example.com/" },
        { name: "Justin Uberti", company: "Google" },
-       { name: "Victoria Kirst", company: "Google" },
+       { name: "Guido Urdaneta", company: "Google" }
    ],
 
    // authors, add as many as you like.
@@ -62,5 +62,23 @@ var respecConfig = {
    // This is important for Rec-track documents, do not copy a patent URI from a random
    // document unless you know what you're doing. If in doubt ask your friendly neighbourhood
    // Team Contact.
-   wgPatentURI:   ["http://www.w3.org/2004/01/pp-impl/47318/status","http://www.w3.org/2004/01/pp-impl/43696/status"]
+   wgPatentURI:   ["http://www.w3.org/2004/01/pp-impl/47318/status","http://www.w3.org/2004/01/pp-impl/43696/status"],
+
+   // Bug tracker and mailing list info
+   issueBase: "https://github.com/w3c/mediacapture-output/issues/",
+   otherLinks: [
+    {
+      key: "Participate",
+      data: [
+        {
+          value: "Mailing list",
+          href: "http://lists.w3.org/Archives/Public/public-media-capture/"
+        },
+        {
+          value: "Browse open issues",
+          href: "https://github.com/w3c/mediacapture-output/issues"
+        }
+      ]
+    }
+  ],
 };
