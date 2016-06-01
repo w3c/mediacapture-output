@@ -52,7 +52,7 @@ var respecConfig = {
    wg: ["Device and Sensors Working Group", "Web Real-Time Communications Working Group"],
 
    // URI of the public WG page
-   wgURI: ["http://www.w3.org/2009/dap/", "http://www.w3.org/2011/04/webrtc/"]
+   wgURI: ["http://www.w3.org/2009/dap/", "http://www.w3.org/2011/04/webrtc/"],
 
    // name (without the @w3.org) of the public mailing to which comments are due
    wgPublicList: "public-media-capture",
