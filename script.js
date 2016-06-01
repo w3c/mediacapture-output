@@ -20,7 +20,7 @@ var respecConfig = {
    // prevED: "",
 
    // if there a publicly available Editor's Draft, this is the link
-   edDraftURI: "http://w3c.github.io/mediacapture-output/",
+   edDraftURI: "https://w3c.github.io/mediacapture-output/",
 
    // if this is a LCWD, uncomment and set the end of its review period
    // lcEnd: "2009-08-05",
@@ -35,8 +35,8 @@ var respecConfig = {
    editors:  [
        // { name: "Your Name", url: "http://example.org/",
        // company: "Your Company", companyURL: "http://example.com/" },
-       { name: "Justin Uberti", company: "Google" },
-       { name: "Guido Urdaneta", company: "Google" }
+       { name: "Justin Uberti", company: "Google", w3cid: 51065 },
+       { name: "Guido Urdaneta", company: "Google", w3cid: 84810 }
    ],
 
    // authors, add as many as you like.
@@ -49,10 +49,10 @@ var respecConfig = {
    //],
 
    // name of the WG
-   wg: ["Web Real-Time Communication Working Group", "Device APIs Working Group"]          ,
+   wg: ["Device and Sensors Working Group", "Web Real-Time Communications Working Group"],
 
    // URI of the public WG page
-   wgURI:["http://www.w3.org/2011/04/webrtc/","http://www.w3.org/2009/dap"],
+   wgURI: ["http://www.w3.org/2009/dap/", "http://www.w3.org/2011/04/webrtc/"],
 
    // name (without the @w3.org) of the public mailing to which comments are due
    wgPublicList: "public-media-capture",
@@ -62,7 +62,7 @@ var respecConfig = {
    // This is important for Rec-track documents, do not copy a patent URI from a random
    // document unless you know what you're doing. If in doubt ask your friendly neighbourhood
    // Team Contact.
-   wgPatentURI:   ["http://www.w3.org/2004/01/pp-impl/47318/status","http://www.w3.org/2004/01/pp-impl/43696/status"],
+   wgPatentURI: ["http://www.w3.org/2004/01/pp-impl/43696/status", "http://www.w3.org/2004/01/pp-impl/47318/status"],
 
    // Bug tracker and mailing list info
    issueBase: "https://github.com/w3c/mediacapture-output/issues/",
@@ -72,7 +72,7 @@ var respecConfig = {
       data: [
         {
           value: "Mailing list",
-          href: "http://lists.w3.org/Archives/Public/public-media-capture/"
+          href: "https://lists.w3.org/Archives/Public/public-media-capture/"
         },
         {
           value: "Browse open issues",
