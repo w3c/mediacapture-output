@@ -1,14 +1,10 @@
 <!DOCTYPE html>
-<!--
-   To publish this document, see instructions in README
-   -->
 <html lang="en-us">
-  <head>
-    <meta charset=utf-8>
+<head>
+    <meta charset="utf-8">
     <link href="style.css" rel="stylesheet">
 
     <title>Audio Output Devices API</title>
-
 
     <script class="remove"
     src="https://www.w3.org/Tools/respec/respec-w3c-common"
@@ -16,6 +12,7 @@
 
     <script class="remove" src="script.js" type="text/javascript"> //
     &lt;!-- keep this comment --&gt; // </script>
+
   </head>
 
   <body>
@@ -36,22 +33,17 @@
     <section id="htmlmediaelement-extensions">
       <h2><a href="#idl-def-HTMLMediaElement" class="idlType"><code>HTMLMediaElement</code></a> Extensions</h2>
       <p>This section specifies additions to the <a href="http://www.w3.org/TR/html5/embedded-content-0.html#htmlmediaelement"><code>HTMLMediaElement</code></a> [[!HTML5]] when the Audio Output Devices API is supported.</p>
-      <dl title='partial interface HTMLMediaElement' class='idl'>
-        <dt>readonly attribute DOMString sinkId</dt>
-        <dd>
+      <div><pre class="idl">partial interface HTMLMediaElement {
+    readonly        attribute DOMString sinkId;
+    Promise&lt;void&gt; setSinkId (DOMString sinkId);
+};</pre><section><h2>Attributes</h2><dl data-link-for="HTMLMediaElement" data-dfn-for="HTMLMediaElement" class="attributes"><dt><dfn><code>sinkId</code></dfn> of type <span class="idlAttrType"><a>DOMString</a></span>, readonly       </dt><dd>
         The unique ID of the audio device through which output is being delivered, or empty string if it is using the user agent default. This ID should be one of the <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDeviceInfo-deviceId"><code>MediaDeviceInfo.deviceId</code></a> values returned from <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDevices-enumerateDevices-void-MediaDeviceInfoCallback-resultCallback"><code>MediaDevices.enumerateDevices()</code></a> [[!GETUSERMEDIA]], or one of the predefined IDs listed below.
-        </dd>
-        <dt>Promise&lt;void&gt; setSinkId ()</dt>
-        <dd>
+        </dd></dl></section><section><h2>Methods</h2><dl data-link-for="HTMLMediaElement" data-dfn-for="HTMLMediaElement" class="methods"><dt><dfn><code>setSinkId</code></dfn></dt><dd>
         Sets the ID of the audio device through which audio output should be rendered if the application is <a href="#privacy-considerations">authorized</a> to play out of a given device.
-          <dl class='parameters'>
-            <dt>DOMString sinkId</dt>
-            <dd>
+          
+        <table class="parameters"><tbody><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">sinkId</td><td class="prmType"><code>DOMString</code></td><td class="prmNullFalse"><span role="img" aria-label="False">✘</span></td><td class="prmOptFalse"><span role="img" aria-label="False">✘</span></td><td class="prmDesc">
               The id corresponding to the audio output device.
-            </dd>
-          </dl>
-        </dd>
-      </dl>
+            </td></tr></tbody></table><div><em>Return type: </em><code>Promise&lt;void&gt;</code></div></dd></dl></section></div>
       <p>When this method is invoked, the user agent must run the following steps:</p>
       <ol class="method-algorithm">
         <li><p>If <code>sinkId</code> and the <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>sinkId</code></a> attribute are the same object, return a resolved promise.</p></li>
@@ -125,24 +117,19 @@
       which reference an abstract device. For example, if the application wants to
       route audio to a headset, but doesn't care exactly which headset, it can
       use the predefined id for the system communications device.
-      <section>
+      </p><section>
         <h3>MediaDeviceId Enum</h3>
 
-        <dl class="idl" title="enum MediaDeviceId">
-          <dt>id-multimedia</dt>
-
-          <dd>Indicates the system multimedia playout device.
+        <div><pre class="idl">enum MediaDeviceId {
+    "id-multimedia",
+    "id-communications"
+};</pre><table data-link-for="MediaDeviceId" data-dfn-for="MediaDeviceId" class="simple"><tbody><tr><th colspan="2">Enumeration description</th></tr><tr><td><dfn><code id="idl-def-MediaDeviceId.id-multimedia">id-multimedia</code></dfn></td><td>Indicates the system multimedia playout device.
           This is the default, i.e., equivalent to not setting the sink id,
           or setting it to "".
-          </dd>
-
-          <dt>id-communications</dt>
-
-          <dd>Indicates the system audio communications device, if one exists,
+          </td></tr><tr><td><dfn><code id="idl-def-MediaDeviceId.id-communications">id-communications</code></dfn></td><td>Indicates the system audio communications device, if one exists,
           typically a headset of some sort. [NOTE: what should happen if the
           system does not support this concept, but does know about headsets?]
-          </dd>
-        </dl>
+          </td></tr></tbody></table></div>
       </section>
     </section>
 
@@ -185,5 +172,6 @@
 
       <p>The following people have contributed directly to the developmment of this specification: Harald Alvestrand, Rick Byers, Dominique Hazael-Massieux (via the HTML5Apps project), Philip Jägenstedt, Victoria Kirst,  Shijun Sun, Martin Thomson, Chris Wilson.</p>
     </section>
-  </body>
-</html>
+  
+
+</body></html>
