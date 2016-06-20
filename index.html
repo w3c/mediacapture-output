@@ -31,7 +31,7 @@
     </section>
 
     <section id="htmlmediaelement-extensions">
-      <h2><a href="#idl-def-HTMLMediaElement" class="idlType"><code>HTMLMediaElement</code></a> Extensions</h2>
+      <h2><a><code>HTMLMediaElement</code></a> Extensions</h2>
       <p>This section specifies additions to the <a href="http://www.w3.org/TR/html5/embedded-content-0.html#htmlmediaelement"><code>HTMLMediaElement</code></a> [[!HTML5]] when the Audio Output Devices API is supported.</p>
       <div><pre class="idl">partial interface HTMLMediaElement {
     readonly        attribute DOMString sinkId;
@@ -46,7 +46,7 @@
             </td></tr></tbody></table><div><em>Return type: </em><code>Promise&lt;void&gt;</code></div></dd></dl></section></div>
       <p>When this method is invoked, the user agent must run the following steps:</p>
       <ol class="method-algorithm">
-        <li><p>If <code>sinkId</code> and the <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>sinkId</code></a> attribute are the same object, return a resolved promise.</p></li>
+        <li><p>If <code>sinkId</code> and the <a data-link-for="HTMLMediaElement"><code>sinkId</code></a> attribute are the same object, return a resolved promise.</p></li>
         <li><p>Let <var>promise</var> be a new promise.</p></li>
         <li><p>Run the following steps asynchronously:</p>
           <ol>
@@ -54,8 +54,8 @@
             <li><p>If application is not authorized to play audio through the device identified by <code>sinkId</code>, reject <var>promise</var> with a new <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#securityerror"><code>SecurityError</code></a>.</p></li>
             <li><p>Associate the audio output device represented by <code>sinkId</code> with this object for playout.</p></li>
             <li><p>If the preceding step failed, reject <var>promise</var> with a new <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#aborterror"><code>AbortError</code></a>.</p></li>
-            <li><p>If the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false, stop playing this object's audio out of the device represented by the <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>sinkId</code></a> attribute.</p></li>
-            <li><p>Set the <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>sinkId</code></a> attribute to <code>sinkId</code>.</p></li>
+            <li><p>If the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false, stop playing this object's audio out of the device represented by the <a  data-link-for="HTMLMediaElement"><code>sinkId</code></a> attribute.</p></li>
+            <li><p>Set the <a  data-link-for="HTMLMediaElement"><code>sinkId</code></a> attribute to <code>sinkId</code>.</p></li>
             <li><p>If the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false, start playing this object's audio out of the device represented by <code>sinkId</code>.</p></li>
             <li><p>Resolve <var>promise</var>.</p></li>
           </ol>
@@ -67,22 +67,22 @@
         <h3>Algorithms</h3>
         <section id="algorithms-sink-unavailable">
           <h4>Sink no longer available</h4>
-          <p>The audio device associated with <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>HTMLMediaElement.sinkId</code></a> may become unavailable, for example if it is unplugged.</p>
-          <p>When the audio device identified by the <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>sinkId</code></a> attribute is no longer available, the user agent must take no action. For example, if the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false when the device identified by the sinkId is no longer available, then playback will continue as normal. Of course, audio will not be rendered because the device to which the media element is attached is unavailable.</p>
+          <p>The audio device associated with <a  data-link-for="HTMLMediaElement"><code>HTMLMediaElement.sinkId</code></a> may become unavailable, for example if it is unplugged.</p>
+          <p>When the audio device identified by the <a  data-link-for="HTMLMediaElement"><code>sinkId</code></a> attribute is no longer available, the user agent must take no action. For example, if the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false when the device identified by the sinkId is no longer available, then playback will continue as normal. Of course, audio will not be rendered because the device to which the media element is attached is unavailable.</p>
           <p>
             <em>The following paragraph is non-normative.</em>
           </p>
-          <p class="informative">If the application wishes to react to the device change, the application can listen to the <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#event-mediadevices-devicechange"><code>devicechange</code></a> event and query <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#dom-mediadevices-enumeratedevices"><code>enumerateDevices()</code></a> for the list of updated devices. If the <a href="#widl-HTMLMediaElement-sinkId"><code>HTMLMediaElement.sinkId</code></a> is no longer present in the list of <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDeviceInfo-deviceId"><code>MediaDeviceInfo.deviceId</code></a>s returned, the device is no longer available and the application can choose to react accordingly.</p>
+          <p class="informative">If the application wishes to react to the device change, the application can listen to the <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#event-mediadevices-devicechange"><code>devicechange</code></a> event and query <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#dom-mediadevices-enumeratedevices"><code>enumerateDevices()</code></a> for the list of updated devices. If the <a data-link-for="HTMLMediaElement"><code>HTMLMediaElement.sinkId</code></a> is no longer present in the list of <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDeviceInfo-deviceId"><code>MediaDeviceInfo.deviceId</code></a>s returned, the device is no longer available and the application can choose to react accordingly.</p>
         </section>
         <section id="algorithms-new-sink-available">
           <h4>New sink available</h4>
-          <p>New audio devices may become available to the user agent, or an audio device (identified by <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>HTMLMediaElement.sinkId</code></a>) that had previously become <a href="#algorithms-sink-unavailable">unavailable</a> may become available again, for example, if it is unplugged and later plugged back in.</p>
+          <p>New audio devices may become available to the user agent, or an audio device (identified by <a  data-link-for="HTMLMediaElement"><code>HTMLMediaElement.sinkId</code></a>) that had previously become <a href="#algorithms-sink-unavailable">unavailable</a> may become available again, for example, if it is unplugged and later plugged back in.</p>
           <p>In this scenario, the user agent must run the following steps:</p>
           <ol class="method-algorithm">
             <li><p>Let <var>sinkId</var> be the identifier for the newly available device.</p></li>
-            <li><p>For each <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>sinkId</code></a> whose value is equal to <var>sinkId</var>:</p>
+            <li><p>For each <a  data-link-for="HTMLMediaElement"><code>sinkId</code></a> whose value is equal to <var>sinkId</var>:</p>
               <ol>
-                <li><p>If the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false, start rendering this object's audio out of the device represented by the <a href="#widl-HTMLMediaElement-sinkId"><code>sinkId</code></a> attribute.</p></li>
+                <li><p>If the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false, start rendering this object's audio out of the device represented by the <a data-link-for="HTMLMediaElement"><code>sinkId</code></a> attribute.</p></li>
               </ol>
             </li>
           </ol>
