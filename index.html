@@ -1,14 +1,10 @@
 <!DOCTYPE html>
-<!--
-   To publish this document, see instructions in README
-   -->
 <html lang="en-us">
-  <head>
-    <meta charset=utf-8>
+<head>
+    <meta charset="utf-8">
     <link href="style.css" rel="stylesheet">
 
     <title>Audio Output Devices API</title>
-
 
     <script class="remove"
     src="https://www.w3.org/Tools/respec/respec-w3c-common"
@@ -16,6 +12,7 @@
 
     <script class="remove" src="script.js" type="text/javascript"> //
     &lt;!-- keep this comment --&gt; // </script>
+
   </head>
 
   <body>
@@ -24,9 +21,7 @@
     </section>
 
     <section id="sotd">
-      <p>This document is not complete. It is subject to major changes and,
-      while early experimentations are encouraged, it is therefore not
-      intended for implementation.</p>
+      <p>The WebRTC and Device and Sensors Working Group intend to publish this specification as a Candidate Recommendation soon. Consequently, this is a Request for wide review of this document.</p>
     </section>
 
     <section class="informative" id="intro">
@@ -36,36 +31,31 @@
     </section>
 
     <section id="htmlmediaelement-extensions">
-      <h2><a href="#idl-def-HTMLMediaElement" class="idlType"><code>HTMLMediaElement</code></a> Extensions</h2>
+      <h2><a><code>HTMLMediaElement</code></a> Extensions</h2>
       <p>This section specifies additions to the <a href="http://www.w3.org/TR/html5/embedded-content-0.html#htmlmediaelement"><code>HTMLMediaElement</code></a> [[!HTML5]] when the Audio Output Devices API is supported.</p>
-      <dl title='partial interface HTMLMediaElement' class='idl'>
-        <dt>readonly attribute DOMString sinkId</dt>
-        <dd>
-        The unique ID of the audio device through which output is being delivered, or empty string if it is using the user agent default. This ID should be one of the <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDeviceInfo-deviceId"><code>MediaDeviceInfo.deviceId</code></a> values returned from <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDevices-enumerateDevices-void-MediaDeviceInfoCallback-resultCallback"><code>MediaDevices.enumerateDevices()</code></a> [[!GETUSERMEDIA]], or one of the predefined IDs listed below.
-        </dd>
-        <dt>Promise&lt;void&gt; setSinkId ()</dt>
-        <dd>
+      <div><pre class="idl">partial interface HTMLMediaElement {
+    readonly        attribute DOMString sinkId;
+    Promise&lt;void&gt; setSinkId (DOMString sinkId);
+};</pre><section><h2>Attributes</h2><dl data-link-for="HTMLMediaElement" data-dfn-for="HTMLMediaElement" class="attributes"><dt><dfn><code>sinkId</code></dfn> of type <span class="idlAttrType"><a>DOMString</a></span>, readonly       </dt><dd>
+        The unique ID of the audio device through which output is being delivered, or empty string if it is using the user agent default. This ID should be one of the <a href="https://w3c.github.io/mediacapture-main/#widl-MediaDeviceInfo-deviceId"><code>MediaDeviceInfo.deviceId</code></a> values returned from <a href="https://w3c.github.io/mediacapture-main/#widl-MediaDevices-enumerateDevices-void-MediaDeviceInfoCallback-resultCallback"><code>MediaDevices.enumerateDevices()</code></a> [[!GETUSERMEDIA]], or one of the predefined IDs listed below.
+        </dd></dl></section><section><h2>Methods</h2><dl data-link-for="HTMLMediaElement" data-dfn-for="HTMLMediaElement" class="methods"><dt><dfn><code>setSinkId</code></dfn></dt><dd>
         Sets the ID of the audio device through which audio output should be rendered if the application is <a href="#privacy-considerations">authorized</a> to play out of a given device.
-          <dl class='parameters'>
-            <dt>DOMString sinkId</dt>
-            <dd>
+          
+        <table class="parameters"><tbody><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">sinkId</td><td class="prmType"><code>DOMString</code></td><td class="prmNullFalse"><span role="img" aria-label="False">✘</span></td><td class="prmOptFalse"><span role="img" aria-label="False">✘</span></td><td class="prmDesc">
               The id corresponding to the audio output device.
-            </dd>
-          </dl>
-        </dd>
-      </dl>
+            </td></tr></tbody></table><div><em>Return type: </em><code>Promise&lt;void&gt;</code></div></dd></dl></section></div>
       <p>When this method is invoked, the user agent must run the following steps:</p>
       <ol class="method-algorithm">
-        <li><p>If <code>sinkId</code> and the <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>sinkId</code></a> attribute are the same object, return a resolved promise.</p></li>
+        <li><p>If <code>sinkId</code> and the <a data-link-for="HTMLMediaElement"><code>sinkId</code></a> attribute are the same object, return a resolved promise.</p></li>
         <li><p>Let <var>promise</var> be a new promise.</p></li>
         <li><p>Run the following steps asynchronously:</p>
           <ol>
-            <li><p>If <code>sinkId</code> does not match any audio output device identified by <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#dom-mediadevices-enumeratedevices"><code>enumerateDevices()</code></a>, reject <var>promise</var> with a new <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#notfounderror"><code>NotFoundError</code></a>.</p></li>
+            <li><p>If <code>sinkId</code> does not match any audio output device identified by <a href="https://w3c.github.io/mediacapture-main/#dom-mediadevices-enumeratedevices"><code>enumerateDevices()</code></a>, reject <var>promise</var> with a new <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#notfounderror"><code>NotFoundError</code></a>.</p></li>
             <li><p>If application is not authorized to play audio through the device identified by <code>sinkId</code>, reject <var>promise</var> with a new <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#securityerror"><code>SecurityError</code></a>.</p></li>
             <li><p>Associate the audio output device represented by <code>sinkId</code> with this object for playout.</p></li>
             <li><p>If the preceding step failed, reject <var>promise</var> with a new <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#aborterror"><code>AbortError</code></a>.</p></li>
-            <li><p>If the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false, stop playing this object's audio out of the device represented by the <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>sinkId</code></a> attribute.</p></li>
-            <li><p>Set the <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>sinkId</code></a> attribute to <code>sinkId</code>.</p></li>
+            <li><p>If the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false, stop playing this object's audio out of the device represented by the <a  data-link-for="HTMLMediaElement"><code>sinkId</code></a> attribute.</p></li>
+            <li><p>Set the <a  data-link-for="HTMLMediaElement"><code>sinkId</code></a> attribute to <code>sinkId</code>.</p></li>
             <li><p>If the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false, start playing this object's audio out of the device represented by <code>sinkId</code>.</p></li>
             <li><p>Resolve <var>promise</var>.</p></li>
           </ol>
@@ -77,29 +67,29 @@
         <h3>Algorithms</h3>
         <section id="algorithms-sink-unavailable">
           <h4>Sink no longer available</h4>
-          <p>The audio device associated with <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>HTMLMediaElement.sinkId</code></a> may become unavailable, for example if it is unplugged.</p>
-          <p>When the audio device identified by the <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>sinkId</code></a> attribute is no longer available, the user agent must take no action. For example, if the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false when the device identified by the sinkId is no longer available, then playback will continue as normal. Of course, audio will not be rendered because the device to which the media element is attached is unavailable.</p>
+          <p>The audio device associated with <a  data-link-for="HTMLMediaElement"><code>HTMLMediaElement.sinkId</code></a> may become unavailable, for example if it is unplugged.</p>
+          <p>When the audio device identified by the <a  data-link-for="HTMLMediaElement"><code>sinkId</code></a> attribute is no longer available, the user agent must take no action. For example, if the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false when the device identified by the sinkId is no longer available, then playback will continue as normal. Of course, audio will not be rendered because the device to which the media element is attached is unavailable.</p>
           <p>
             <em>The following paragraph is non-normative.</em>
           </p>
-          <p class="informative">If the application wishes to react to the device change, the application can listen to the <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#event-mediadevices-devicechange"><code>devicechange</code></a> event and query <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#dom-mediadevices-enumeratedevices"><code>enumerateDevices()</code></a> for the list of updated devices. If the <a href="#widl-HTMLMediaElement-sinkId"><code>HTMLMediaElement.sinkId</code></a> is no longer present in the list of <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDeviceInfo-deviceId"><code>MediaDeviceInfo.deviceId</code></a>s returned, the device is no longer available and the application can choose to react accordingly.</p>
+          <p class="informative">If the application wishes to react to the device change, the application can listen to the <a href="https://w3c.github.io/mediacapture-main/#event-mediadevices-devicechange"><code>devicechange</code></a> event and query <a href="https://w3c.github.io/mediacapture-main/#dom-mediadevices-enumeratedevices"><code>enumerateDevices()</code></a> for the list of updated devices. If the <a data-link-for="HTMLMediaElement"><code>HTMLMediaElement.sinkId</code></a> is no longer present in the list of <a href="https://w3c.github.io/mediacapture-main/#widl-MediaDeviceInfo-deviceId"><code>MediaDeviceInfo.deviceId</code></a>s returned, the device is no longer available and the application can choose to react accordingly.</p>
         </section>
         <section id="algorithms-new-sink-available">
           <h4>New sink available</h4>
-          <p>New audio devices may become available to the user agent, or an audio device (identified by <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>HTMLMediaElement.sinkId</code></a>) that had previously become <a href="#algorithms-sink-unavailable">unavailable</a> may become available again, for example, if it is unplugged and later plugged back in.</p>
+          <p>New audio devices may become available to the user agent, or an audio device (identified by <a  data-link-for="HTMLMediaElement"><code>HTMLMediaElement.sinkId</code></a>) that had previously become <a href="#algorithms-sink-unavailable">unavailable</a> may become available again, for example, if it is unplugged and later plugged back in.</p>
           <p>In this scenario, the user agent must run the following steps:</p>
           <ol class="method-algorithm">
             <li><p>Let <var>sinkId</var> be the identifier for the newly available device.</p></li>
-            <li><p>For each <a href="#widl-HTMLMediaElement-sinkId" class="idlType"><code>sinkId</code></a> whose value is equal to <var>sinkId</var>:</p>
+            <li><p>For each <a  data-link-for="HTMLMediaElement"><code>sinkId</code></a> whose value is equal to <var>sinkId</var>:</p>
               <ol>
-                <li><p>If the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false, start rendering this object's audio out of the device represented by the <a href="#widl-HTMLMediaElement-sinkId"><code>sinkId</code></a> attribute.</p></li>
+                <li><p>If the media element's <a href="http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>paused</code></a> attribute is false, start rendering this object's audio out of the device represented by the <a data-link-for="HTMLMediaElement"><code>sinkId</code></a> attribute.</p></li>
               </ol>
             </li>
           </ol>
           <p>
             <em>The following paragraph is non-normative.</em>
           </p>
-          <p class="informative">If the application wishes to react to the device change, the application can listen to the <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#event-mediadevices-devicechange"><code>devicechange</code></a> event and query <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#dom-mediadevices-enumeratedevices"><code>enumerateDevices()</code></a> for the list of updated devices.</p>
+          <p class="informative">If the application wishes to react to the device change, the application can listen to the <a href="https://w3c.github.io/mediacapture-main/#event-mediadevices-devicechange"><code>devicechange</code></a> event and query <a href="https://w3c.github.io/mediacapture-main/#dom-mediadevices-enumeratedevices"><code>enumerateDevices()</code></a> for the list of updated devices.</p>
         </section>
       </section>
     </section>
@@ -113,7 +103,7 @@
           <ul>
             <li>If no <code>sinkId</code> is provided, use the default device of the user agent.</li>
             <li>If <code>sinkId</code> is the empty string, use the default device of the user agent.</li>
-            <li>If the <code>sinkId</code> does not match any audio output device identified by <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#dom-mediadevices-enumeratedevices"><code>enumerateDevices()</code></a>, throw a DOMException whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#notfounderror"><code>NotFoundError</code></a>.</li>
+            <li>If the <code>sinkId</code> does not match any audio output device identified by <a href="https://w3c.github.io/mediacapture-main/#dom-mediadevices-enumeratedevices"><code>enumerateDevices()</code></a>, throw a DOMException whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#notfounderror"><code>NotFoundError</code></a>.</li>
             <li>If the application is not authorized to play audio through the device identified by the given <code>sinkId</code>, throw a <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#securityerror"><code>SecurityError</code></a>.</li>
             <li>If the device identified by the given <code>sinkId</code> cannot be used due to a unspecified error, throw a <a href="http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a> whose name is <a href="http://www.w3.org/TR/html5/infrastructure.html#aborterror"><code>AbortError</code></a>.</li>
           </ul>
@@ -127,24 +117,19 @@
       which reference an abstract device. For example, if the application wants to
       route audio to a headset, but doesn't care exactly which headset, it can
       use the predefined id for the system communications device.
-      <section>
+      </p><section>
         <h3>MediaDeviceId Enum</h3>
 
-        <dl class="idl" title="enum MediaDeviceId">
-          <dt>id-multimedia</dt>
-
-          <dd>Indicates the system multimedia playout device.
+        <div><pre class="idl">enum MediaDeviceId {
+    "id-multimedia",
+    "id-communications"
+};</pre><table data-link-for="MediaDeviceId" data-dfn-for="MediaDeviceId" class="simple"><tbody><tr><th colspan="2">Enumeration description</th></tr><tr><td><dfn><code id="idl-def-MediaDeviceId.id-multimedia">id-multimedia</code></dfn></td><td>Indicates the system multimedia playout device.
           This is the default, i.e., equivalent to not setting the sink id,
           or setting it to "".
-          </dd>
-
-          <dt>id-communications</dt>
-
-          <dd>Indicates the system audio communications device, if one exists,
+          </td></tr><tr><td><dfn><code id="idl-def-MediaDeviceId.id-communications">id-communications</code></dfn></td><td>Indicates the system audio communications device, if one exists,
           typically a headset of some sort. [NOTE: what should happen if the
           system does not support this concept, but does know about headsets?]
-          </dd>
-        </dl>
+          </td></tr></tbody></table></div>
       </section>
     </section>
 
@@ -162,7 +147,7 @@
         non-default output devices; the details of this process are left to the implementation.
         For example, one approach could be to add an explicit user prompt of the form
         "example.com wants to access all your sound output devices".</p>
-        <p>However, implementations must support implicit consent via the <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDevices-getUserMedia-void-MediaStreamConstraints-constraints-NavigatorUserMediaSuccessCallback-successCallback-NavigatorUserMediaErrorCallback-errorCallback"><code>getUserMedia()</code></a> permission prompt; when an audio input device is authorized and opened via <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDevices-getUserMedia-void-MediaStreamConstraints-constraints-NavigatorUserMediaSuccessCallback-successCallback-NavigatorUserMediaErrorCallback-errorCallback"><code>getUserMedia()</code></a>, this also authorizes access to any associated audio output devices (i.e., those with the same <a href="http://dev.w3.org/2011/webrtc/editor/archives/20140619/getusermedia.html#widl-MediaDeviceInfo-groupId"><code>MediaDeviceInfo.groupId</code></a>). This conviently handles the common case of wanting to route both input and output audio through a headset or speakerphone device.</p>
+        <p>However, implementations must support implicit consent via the <a href="https://w3c.github.io/mediacapture-main/#widl-MediaDevices-getUserMedia-void-MediaStreamConstraints-constraints-NavigatorUserMediaSuccessCallback-successCallback-NavigatorUserMediaErrorCallback-errorCallback"><code>getUserMedia()</code></a> permission prompt; when an audio input device is authorized and opened via <a href="https://w3c.github.io/mediacapture-main/#widl-MediaDevices-getUserMedia-void-MediaStreamConstraints-constraints-NavigatorUserMediaSuccessCallback-successCallback-NavigatorUserMediaErrorCallback-errorCallback"><code>getUserMedia()</code></a>, this also authorizes access to any associated audio output devices (i.e., those with the same <a href="https://w3c.github.io/mediacapture-main/#widl-MediaDeviceInfo-groupId"><code>MediaDeviceInfo.groupId</code></a>). This conviently handles the common case of wanting to route both input and output audio through a headset or speakerphone device.</p>
       </section>
     </section>
 
@@ -187,5 +172,6 @@
 
       <p>The following people have contributed directly to the developmment of this specification: Harald Alvestrand, Rick Byers, Dominique Hazael-Massieux (via the HTML5Apps project), Philip Jägenstedt, Victoria Kirst,  Shijun Sun, Martin Thomson, Chris Wilson.</p>
     </section>
-  </body>
-</html>
+  
+
+</body></html>
