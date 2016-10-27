@@ -46,7 +46,7 @@
             </td></tr></tbody></table><div><em>Return type: </em><code>Promise&lt;void&gt;</code></div></dd></dl></section></div>
       <p>When this method is invoked, the user agent must run the following steps:</p>
       <ol class="method-algorithm">
-        <li><p>If <code>sinkId</code> is equal to the media element's <a data-link-for="HTMLMediaElement"><code>sinkId</code></a> attribute, return a resolved promise.</p></li>
+        <li><p>If <code>sinkId</code> is equal to the media element's <a data-link-for="HTMLMediaElement"><code>sinkId</code></a> attribute, return a promise resolved with <code>undefined<code>.</p></li>
         <li><p>Let <var>promise</var> be a new promise.</p></li>
         <li><p>Run the following substeps in parallel:</p>
           <ol>
