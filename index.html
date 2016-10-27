@@ -54,14 +54,13 @@
           <dd>
             The unique ID of the audio device through which output is being
             delivered, or the empty string if it is using the user agent
-            default. This ID should be equal to the <a href=
+            default. If nonempty, this ID should be equal to the <a href=
             "https://w3c.github.io/mediacapture-main/#dom-mediadeviceinfo-deviceid">
             <code>deviceId</code></a> attribute of one of the <a href=
             "https://w3c.github.io/mediacapture-main/#idl-def-mediadeviceinfo"><code>
             MediaDeviceInfo</code></a> values returned from <a href=
             "https://w3c.github.io/mediacapture-main/#dom-mediadevices-enumeratedevices">
-            <code>MediaDevices.enumerateDevices()</code></a> [[!GETUSERMEDIA]],
-            or one of the predefined IDs listed below.
+            <code>MediaDevices.enumerateDevices()</code></a> [[!GETUSERMEDIA]].
           </dd>
         </dl>
       </section>
@@ -282,48 +281,6 @@
         </li>
       </ul>Requiring the sink ID to be set at construction time simplifies the
       implementation, since the output sample rate is fixed.
-    </section>
-  </section>
-  <section id="predefined-ids">
-    <h2>Predefined Device IDs</h2>
-    <p>User agents must also support the following predefined
-    pseudo-identifiers which reference an abstract device. For example, if the
-    application wants to route audio to a headset, but doesn't care exactly
-    which headset, it can use the predefined id for the system communications
-    device.</p>
-    <section>
-      <h3>MediaDeviceId Enum</h3>
-      <div>
-        <pre class="idl">
-        enum MediaDeviceId {
-          "id-multimedia",
-          "id-communications"
-        };
-        </pre>
-        <table data-link-for="MediaDeviceId" data-dfn-for="MediaDeviceId"
-        class="simple">
-          <tbody>
-            <tr>
-              <th colspan="2">Enumeration description</th>
-            </tr>
-            <tr>
-              <td><dfn><code id=
-              "idl-def-MediaDeviceId.id-multimedia">id-multimedia</code></dfn></td>
-              <td>Indicates the system multimedia playout device. This is the
-              default, i.e., equivalent to not setting the sink id, or setting
-              it to "".</td>
-            </tr>
-            <tr>
-              <td><dfn><code id=
-              "idl-def-MediaDeviceId.id-communications">id-communications</code></dfn></td>
-              <td>Indicates the system audio communications device, if one
-              exists, typically a headset of some sort. [NOTE: what should
-              happen if the system does not support this concept, but does know
-              about headsets?]</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </section>
   </section>
   <section id="privacy-considerations">
