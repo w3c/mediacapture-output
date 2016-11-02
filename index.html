@@ -52,15 +52,22 @@
           <dt><dfn><code>sinkId</code></dfn> of type <span class=
           "idlAttrType"><a>DOMString</a></span>, readonly</dt>
           <dd>
-            The unique ID of the audio device through which output is being
-            delivered, or the empty string if it is using the user agent
-            default. If nonempty, this ID should be equal to the <a href=
+            This attribute contains the ID of the audio device through which
+            output is being delivered, or the empty string if output is
+            delivered through the user-agent default device. If nonempty, this
+            ID should be equal to the <a href=
             "https://w3c.github.io/mediacapture-main/#dom-mediadeviceinfo-deviceid">
             <code>deviceId</code></a> attribute of one of the <a href=
             "https://w3c.github.io/mediacapture-main/#idl-def-mediadeviceinfo"><code>
             MediaDeviceInfo</code></a> values returned from <a href=
             "https://w3c.github.io/mediacapture-main/#dom-mediadevices-enumeratedevices">
-            <code>MediaDevices.enumerateDevices()</code></a> [[!GETUSERMEDIA]].
+            . <code>MediaDevices.enumerateDevices()</code></a>
+            [[!GETUSERMEDIA]]. The value of this attribute is equal to the
+            argument passed to the last successful execution of <code><a href=
+            "#dom-htmlmediaelement-setsinkid">setSinkId()</a></code>, or the
+            empty string if <code><a href=
+            "#dom-htmlmediaelement-setsinkid">setSinkId()</a></code> has never
+            been called.
           </dd>
         </dl>
       </section>
@@ -90,8 +97,9 @@
                   "False">✘</span></td>
                   <td class="prmOptFalse"><span role="img" aria-label=
                   "False">✘</span></td>
-                  <td class="prmDesc">The id corresponding to the audio output
-                  device.</td>
+                  <td class="prmDesc">The ID corresponding to the audio output
+                  device. The empty string represents the user agent
+                  default.</td>
                 </tr>
               </tbody>
             </table>
