@@ -250,47 +250,6 @@
       </section>
     </section>
   </section>
-  <section id="webaudio-extensions">
-    <h2><a href="http://webaudio.github.io/web-audio-api/">Web Audio API</a>
-    Extensions</h2>
-    <p>This is a work in progress. This section discusses modifications of the
-    <a href="http://webaudio.github.io/web-audio-api/">Web Audio API</a>
-    [[!WEBAUDIO]] when the Audio Output Devices API is supported.</p>
-    <section>
-      <h3><code>AudioContext</code> constructor argument</h3>The sink ID is
-      passed as an argument to the <a href=
-      "http://webaudio.github.io/web-audio-api/#the-audiocontext-interface"><code>
-      AudioContext</code></a> constructor, e.g.,<br>
-      <br>
-      <code>new AudioContext({ sinkId: requestedSinkId });</code><br>
-      <ul>
-        <li>If no <code>sinkId</code> is provided, use the default device of
-        the user agent.</li>
-        <li>If <code>sinkId</code> is the empty string, use the default device
-        of the user agent.</li>
-        <li>If the <code>sinkId</code> does not match any audio output device
-        identified by <a href=
-        "https://w3c.github.io/mediacapture-main/#dom-mediadevices-enumeratedevices">
-          <code>enumerateDevices()</code></a>, throw a DOMException whose name
-          is <a href=
-          "http://www.w3.org/TR/html5/infrastructure.html#notfounderror"><code>NotFoundError</code></a>.
-        </li>
-        <li>If the application is not authorized to play audio through the
-        device identified by the given <code>sinkId</code>, throw a <a href=
-        "http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a>
-        whose name is <a href=
-        "http://www.w3.org/TR/html5/infrastructure.html#securityerror"><code>SecurityError</code></a>.
-        </li>
-        <li>If the device identified by the given <code>sinkId</code> cannot be
-        used due to a unspecified error, throw a <a href=
-        "http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>DOMException</code></a>
-        whose name is <a href=
-        "http://www.w3.org/TR/html5/infrastructure.html#aborterror"><code>AbortError</code></a>.
-        </li>
-      </ul>Requiring the sink ID to be set at construction time simplifies the
-      implementation, since the output sample rate is fixed.
-    </section>
-  </section>
   <section id="privacy-considerations">
     <h2>Privacy Considerations</h2>
     <section id="privacy-consent">
