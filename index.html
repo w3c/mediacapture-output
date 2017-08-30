@@ -34,9 +34,9 @@
   </section>
   <section id="htmlmediaelement-extensions">
     <h2><a><code>HTMLMediaElement</code></a> Extensions</h2>
-    <p>This section specifies additions to the <a href=
-    "http://www.w3.org/TR/html5/embedded-content-0.html#htmlmediaelement"><code>
-    HTMLMediaElement</code></a> [[!HTML5]] when the Audio Output Devices API is
+    <p>This section specifies additions to the <dfn data-cite=
+    "!HTML5/embedded-content-0.html#htmlmediaelement"><code>
+    HTMLMediaElement</code></dfn> [[!HTML5]] when the Audio Output Devices API is
     supported.</p>
     <div>
       <pre class="idl">
@@ -55,18 +55,15 @@
             This attribute contains the ID of the audio device through which
             output is being delivered, or the empty string if output is
             delivered through the user-agent default device. If nonempty, this
-            ID should be equal to the <a href=
-            "https://w3c.github.io/mediacapture-main/#dom-mediadeviceinfo-deviceid">
-            <code>deviceId</code></a> attribute of one of the <a href=
-            "https://w3c.github.io/mediacapture-main/#idl-def-mediadeviceinfo"><code>
-            MediaDeviceInfo</code></a> values returned from <a href=
-            "https://w3c.github.io/mediacapture-main/#dom-mediadevices-enumeratedevices">
-            . <code>MediaDevices.enumerateDevices()</code></a>
+            ID should be equal to the <dfn data-cite="!GETUSERMEDIA#dom-mediadeviceinfo-deviceid">
+            <code>deviceId</code></dfn> attribute of one of the <dfn data-cite=
+            "!GETUSERMEDIA#idl-def-mediadeviceinfo"><code>
+            MediaDeviceInfo</code></dfn> values returned from 
+            <code>MediaDevices.<dfn data-cite=
+            "!GETUSERMEDIA#dom-mediadevices-enumeratedevices">enumerateDevices()</dfn></code>
             [[!GETUSERMEDIA]]. The value of this attribute is equal to the
-            argument passed to the last successful execution of <code><a href=
-            "#dom-htmlmediaelement-setsinkid">setSinkId()</a></code>, or the
-            empty string if <code><a href=
-            "#dom-htmlmediaelement-setsinkid">setSinkId()</a></code> has never
+            argument passed to the last successful execution of <code><a>setSinkId()</a></code>, or the
+            empty string if <code><a>setSinkId()</a></code> has never
             been called.
           </dd>
         </dl>
@@ -126,41 +123,35 @@
         <ol>
           <li>
             <p>If <code>sinkId</code> does not match any audio output device
-            identified by the result that would be provided by <a href=
-            "https://w3c.github.io/mediacapture-main/#dom-mediadevices-enumeratedevices">
-            <code>enumerateDevices()</code></a>, reject <var>promise</var> with
-            a new <a href=
-            "http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>
-            DOMException</code></a> whose name is <a href=
-            "http://www.w3.org/TR/html5/infrastructure.html#notfounderror"><code>
-            NotFoundError</code></a> and abort these substeps.</p>
+            identified by the result that would be provided by <a><code>enumerateDevices()</code></a>, reject <var>promise</var> with
+            a new <dfn data-cite=
+            "!HTML5/infrastructure.html#domexception"><code>
+            DOMException</code></dfn> whose name is <dfn data-cite=
+            "!HTML5/infrastructure.html#notfounderror"><code>
+            NotFoundError</code></dfn> and abort these substeps.</p>
           </li>
           <li>
             <p>If the application is not authorized to play audio through the
             device identified by <code>sinkId</code>, reject <var>promise</var>
-            with a new <a href=
-            "http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>
-            DOMException</code></a> whose name is <a href=
-            "http://www.w3.org/TR/html5/infrastructure.html#securityerror"><code>
-            SecurityError</code></a> and abort these substeps.</p>
+            with a new <a><code>
+            DOMException</code></a> whose name is <dfn data-cite="!HTML5/infrastructure.html#securityerror"><code>
+            SecurityError</code></dfn> and abort these substeps.</p>
           </li>
           <li>
             <p>Switch the underlying output device for the media element to the
             device identified by <code>sinkId</code>.</p>
             <p class="note">If this substep is successful and the media
-            element's <a href=
-            "http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused">
-            <code>paused</code></a> attribute is false, audio will stop playing
+            element's <dfn data-cite="!HTML5/embedded-content-0.html#dom-media-paused">
+            <code>paused</code></dfn> attribute is false, audio will stop playing
             out of the device represented by the element's <a data-link-for=
             "HTMLMediaElement"><code>sinkId</code></a> attribute and will start
             playing out of the device identified by <code>sinkId</code></p>
           </li>
           <li>
             <p>If the preceding substep failed, reject <var>promise</var> with
-            a new <a href=
-            "http://www.w3.org/TR/html5/infrastructure.html#domexception"><code>
-            DOMException</code></a> whose name is <a href=
-            "http://www.w3.org/TR/html5/infrastructure.html#aborterror"><code>AbortError</code></a>
+            a new <a><code>
+            DOMException</code></a> whose name is <dfn data-cite=
+            "!HTML5/infrastructure.html#aborterror"><code>AbortError</code></dfn>
             and abort these substeps.</p>
           </li>
           <li>
@@ -187,25 +178,20 @@
         <p>When the audio device identified by the <a data-link-for=
         "HTMLMediaElement"><code>sinkId</code></a> attribute is no longer
         available, the user agent must take no action. For example, if the
-        media element's <a href=
-        "http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused"><code>
+        media element's <a><code>
         paused</code></a> attribute is false when the device identified by the
         sinkId is no longer available, then playback will continue as normal.
         In this case, audio will not be rendered because the device to which
         the media element is attached is unavailable.</p>
         <p><em>The following paragraph is non-normative.</em></p>
         <p class="informative">If the application wishes to react to the device
-        change, the application can listen to the <a href=
-        "https://w3c.github.io/mediacapture-main/#event-mediadevices-devicechange">
-        <code>devicechange</code></a> event and query <a href=
-        "https://w3c.github.io/mediacapture-main/#dom-mediadevices-enumeratedevices">
+        change, the application can listen to the <dfn data-cite="GETUSERMEDIA#event-mediadevices-devicechange">
+        <code>devicechange</code></dfn> event and query <a>
         <code>enumerateDevices()</code></a> for the list of updated devices. If
         the value of the media element's <a data-link-for=
         "HTMLMediaElement"><code>sinkId</code></a> attribute is no longer
-        present as the <a href=
-        "https://w3c.github.io/mediacapture-main/#dom-mediadeviceinfo-deviceid">
-        <code>deviceId</code></a> attribute in the returned list of <a href=
-        "https://w3c.github.io/mediacapture-main/#idl-def-mediadeviceinfo"><code>
+        present as the <a>
+        <code>deviceId</code></a> attribute in the returned list of <a><code>
         MediaDeviceInfo</code></a>s, the device is no longer available and the
         application can choose to react accordingly.</p>
       </section>
@@ -229,8 +215,7 @@
             <var>sinkId</var>:</p>
             <ol>
               <li>
-                <p>If the media element's <a href=
-                "http://www.w3.org/TR/html5/embedded-content-0.html#dom-media-paused">
+                <p>If the media element's <a>
                 <code>paused</code></a> attribute is false, start rendering
                 this object's audio out of the device represented by the
                 <a data-link-for="HTMLMediaElement"><code>sinkId</code></a>
@@ -241,10 +226,8 @@
         </ol>
         <p><em>The following paragraph is non-normative.</em></p>
         <p class="informative">If the application wishes to react to the device
-        change, the application can listen to the <a href=
-        "https://w3c.github.io/mediacapture-main/#event-mediadevices-devicechange">
-        <code>devicechange</code></a> event and query <a href=
-        "https://w3c.github.io/mediacapture-main/#dom-mediadevices-enumeratedevices">
+        change, the application can listen to the <a>
+        <code>devicechange</code></a> event and query <a>
         <code>enumerateDevices()</code></a> for the list of updated
         devices.</p>
       </section>
@@ -279,14 +262,13 @@
       user prompt of the form "example.com wants to access all your sound
       output devices".</p>
       <p>However, implementations MUST support implicit consent via the
-      <a href="https://w3c.github.io/mediacapture-main/#dom-mediadevices-getusermedia">
-      <code>getUserMedia()</code></a> permission prompt; when an audio input
-      device is authorized and opened via <a href=
-      "https://w3c.github.io/mediacapture-main/#dom-mediadevices-getusermedia"><code>
+      <dfn data-cite="!GETUSERMEDIA#dom-mediadevices-getusermedia">
+      <code>getUserMedia()</code></dfn> permission prompt; when an audio input
+      device is authorized and opened via <a><code>
       getUserMedia()</code></a>, this also authorizes access to any associated
-      audio output devices (i.e., those with the same <a href=
-      "https://w3c.github.io/mediacapture-main/#dom-mediadeviceinfo-groupid"><code>
-      groupId</code></a>). This conveniently handles the common case of wanting
+      audio output devices (i.e., those with the same <dfn data-cite=
+      "GETUSERMEDIA#dom-mediadeviceinfo-groupid"><code>
+      groupId</code></dfn>). This conveniently handles the common case of wanting
       to route both input and output audio through a headset or speakerphone
       device.</p>
     </section>
