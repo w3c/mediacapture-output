@@ -74,75 +74,75 @@
         class="methods">
           <dt><dfn><code>setSinkId</code></dfn></dt>
           <dd>
-            Sets the ID of the audio device through which audio output should
+            <p>Sets the ID of the audio device through which audio output should
             be rendered if the application is <a href=
             "#privacy-considerations">authorized</a> to play out of a given
-            device.
+            device.</p>
+            <p>When this method is invoked, the user agent must run the following
+            steps:</p>
+            <ol class="method-algorithm">
+              <li>
+                <p>If <code>sinkId</code> is equal to the media element's
+                <a data-link-for="HTMLMediaElement"><code>sinkId</code></a> attribute,
+                return a promise resolved with <code>undefined</code>.</p>
+              </li>
+              <li>
+                <p>Let <var>promise</var> be a new promise.</p>
+              </li>
+              <li>
+                <p>Run the following substeps in parallel:</p>
+                <ol>
+                  <li>
+                    <p>If <code>sinkId</code> does not match any audio output device
+                    identified by the result that would be provided by <a><code>enumerateDevices()</code></a>, reject <var>promise</var> with
+                    a new <dfn data-cite=
+                    "!HTML5/infrastructure.html#domexception"><code>
+                    DOMException</code></dfn> whose name is <dfn data-cite=
+                    "!HTML5/infrastructure.html#notfounderror"><code>
+                    NotFoundError</code></dfn> and abort these substeps.</p>
+                  </li>
+                  <li>
+                    <p>If the application is not authorized to play audio through the
+                    device identified by <code>sinkId</code>, reject <var>promise</var>
+                    with a new <a><code>
+                    DOMException</code></a> whose name is <dfn data-cite="!HTML5/infrastructure.html#securityerror"><code>
+                    SecurityError</code></dfn> and abort these substeps.</p>
+                  </li>
+                  <li>
+                    <p>Switch the underlying output device for the media element to the
+                    device identified by <code>sinkId</code>.</p>
+                    <p class="note">If this substep is successful and the media
+                    element's <dfn data-cite="!HTML5/embedded-content-0.html#dom-media-paused">
+                    <code>paused</code></dfn> attribute is false, audio will stop playing
+                    out of the device represented by the element's <a data-link-for=
+                    "HTMLMediaElement"><code>sinkId</code></a> attribute and will start
+                    playing out of the device identified by <code>sinkId</code></p>
+                  </li>
+                  <li>
+                    <p>If the preceding substep failed, reject <var>promise</var> with
+                    a new <a><code>
+                    DOMException</code></a> whose name is <dfn data-cite=
+                    "!HTML5/infrastructure.html#aborterror"><code>AbortError</code></dfn>
+                    and abort these substeps.</p>
+                  </li>
+                  <li>
+                    <p>Update the internal state of the media element so that the value
+                    of its <a data-link-for="HTMLMediaElement"><code>sinkId</code></a>
+                    attribute corresponds to <code>sinkId</code>.</p>
+                  </li>
+                  <li>
+                    <p>Resolve <var>promise</var>.</p>
+                  </li>
+                </ol>
+              </li>
+              <li>
+                <p>Return <var>promise</var>.</p>
+              </li>
+            </ol>
           </dd>
         </dl>
       </section>
     </div>
-    <p>When this method is invoked, the user agent must run the following
-    steps:</p>
-    <ol class="method-algorithm">
-      <li>
-        <p>If <code>sinkId</code> is equal to the media element's
-        <a data-link-for="HTMLMediaElement"><code>sinkId</code></a> attribute,
-        return a promise resolved with <code>undefined</code>.</p>
-      </li>
-      <li>
-        <p>Let <var>promise</var> be a new promise.</p>
-      </li>
-      <li>
-        <p>Run the following substeps in parallel:</p>
-        <ol>
-          <li>
-            <p>If <code>sinkId</code> does not match any audio output device
-            identified by the result that would be provided by <a><code>enumerateDevices()</code></a>, reject <var>promise</var> with
-            a new <dfn data-cite=
-            "!HTML5/infrastructure.html#domexception"><code>
-            DOMException</code></dfn> whose name is <dfn data-cite=
-            "!HTML5/infrastructure.html#notfounderror"><code>
-            NotFoundError</code></dfn> and abort these substeps.</p>
-          </li>
-          <li>
-            <p>If the application is not authorized to play audio through the
-            device identified by <code>sinkId</code>, reject <var>promise</var>
-            with a new <a><code>
-            DOMException</code></a> whose name is <dfn data-cite="!HTML5/infrastructure.html#securityerror"><code>
-            SecurityError</code></dfn> and abort these substeps.</p>
-          </li>
-          <li>
-            <p>Switch the underlying output device for the media element to the
-            device identified by <code>sinkId</code>.</p>
-            <p class="note">If this substep is successful and the media
-            element's <dfn data-cite="!HTML5/embedded-content-0.html#dom-media-paused">
-            <code>paused</code></dfn> attribute is false, audio will stop playing
-            out of the device represented by the element's <a data-link-for=
-            "HTMLMediaElement"><code>sinkId</code></a> attribute and will start
-            playing out of the device identified by <code>sinkId</code></p>
-          </li>
-          <li>
-            <p>If the preceding substep failed, reject <var>promise</var> with
-            a new <a><code>
-            DOMException</code></a> whose name is <dfn data-cite=
-            "!HTML5/infrastructure.html#aborterror"><code>AbortError</code></dfn>
-            and abort these substeps.</p>
-          </li>
-          <li>
-            <p>Update the internal state of the media element so that the value
-            of its <a data-link-for="HTMLMediaElement"><code>sinkId</code></a>
-            attribute corresponds to <code>sinkId</code>.</p>
-          </li>
-          <li>
-            <p>Resolve <var>promise</var>.</p>
-          </li>
-        </ol>
-      </li>
-      <li>
-        <p>Return <var>promise</var>.</p>
-      </li>
-    </ol>
     <section id="algorithms">
       <h3>Algorithms</h3>
       <section id="algorithms-sink-unavailable">
