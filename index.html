@@ -26,7 +26,7 @@
   <section class="informative" id="intro">
     <h2>Introduction</h2>
     <p>This proposal allows JavaScript to direct the audio output of a media
-    element to authorized devices other than the system or user agent default.
+    element to permitted devices other than the system or user agent default.
     This can be helpful in a variety of real-time communication scenarios as
     well as general media applications. For example, an application can use
     this API to programmatically direct output to a device such as a Bluetooth
@@ -83,7 +83,7 @@
           <dd>
             <p>Sets the ID of the audio device through which audio output should
             be rendered if the application is <a href=
-            "#privacy-considerations">authorized</a> to play out of a given
+            "#privacy-considerations">permitted</a> to play out of a given
             device.</p>
             <p>When this method is invoked, the user agent must run the following
             steps:</p>
@@ -110,18 +110,19 @@
                     <p>If <var>sinkId</var> does not match any audio output
                     device identified by the result that would be provided by
                     <a><code>enumerateDevices()</code></a>, reject
-                    <var>p</var> with a new <dfn data-cite=
-                    "!HTML5/infrastructure.html#domexception"><code>
-                    DOMException</code></dfn> whose name is <dfn data-cite=
-                    "!HTML5/infrastructure.html#notfounderror"><code>
-                    NotFoundError</code></dfn> and abort these substeps.</p>
+                    <var>p</var> with a new
+                    <a href="https://heycam.github.io/webidl/#idl-DOMException">
+                    <code>DOMException</code></a> whose name is
+                    <a href="https://heycam.github.io/webidl/#notfounderror">
+                    <code>NotFoundError</code></a> and abort these substeps.</p>
                   </li>
                   <li>
-                    <p>If the application is not authorized to play audio through the
+                    <p>If the application is not permitted to play audio through the
                     device identified by <var>sinkId</var>, reject <var>p</var>
                     with a new <a><code>
-                    DOMException</code></a> whose name is <dfn data-cite="!HTML5/infrastructure.html#securityerror"><code>
-                    SecurityError</code></dfn> and abort these substeps.</p>
+                    DOMException</code></a> whose name is
+                    <a href="https://heycam.github.io/webidl/#notallowederror">
+                    <code>NotAllowedError</code></a> and abort these substeps.</p>
                   </li>
                   <li>
                     <p>Switch the underlying audio output device for <var>element</var>
@@ -135,10 +136,9 @@
                   </li>
                   <li>
                     <p>If the preceding substep failed, reject <var>p</var>
-                    with a new <a><code>
-                    DOMException</code></a> whose name is <dfn data-cite=
-                    "!HTML5/infrastructure.html#aborterror"><code>AbortError</code></dfn>
-                    and abort these substeps.</p>
+                    with a new <a><code>DOMException</code></a> whose name is
+                    <a href="https://heycam.github.io/webidl/#aborterror">
+                    <code>AbortError</code></a> and abort these substeps.</p>
                   </li>
                   <li>
                     <p>Queue a task that runs the following steps:</p>
@@ -232,8 +232,8 @@
     <section id="privacy-consent">
       <h3>Consent</h3>
       <p>This document extends the Web platform with the ability to direct
-      audio output to non-default devices, when authorization is given.
-      Authorization is necessary because playing audio out of a non-default
+      audio output to non-default devices, when user permission is given.
+      User permission is necessary because playing audio out of a non-default
       device may be unexpected behavior to the user, and may cause a nuisance.
       For example, suppose a user is in a library or other quiet public place
       where she is using a laptop with system audio directed to a USB headset.
@@ -244,9 +244,10 @@
       <p>To prevent these kinds of nuisance scenarios, the user agent must
       acquire the user’s consent to access non-default audio output devices.
       This would prevent the library example outlined earlier, because the
-      application would not be authorized to play out audio from the system
+      application would not be permitted to play out audio from the system
       speakers.</p>
-      <p>The default audio output device is always authorized.</p>
+      <p>The specification adds no permission requirement to the default audio
+      output device.</p>
     </section>
     <section id="privacy-obtaining-consent">
       <h3>Obtaining Consent</h3>
@@ -258,8 +259,8 @@
       <p>However, implementations MUST support implicit consent via the
       <dfn data-cite="!GETUSERMEDIA#dom-mediadevices-getusermedia">
       <code>getUserMedia()</code></dfn> permission prompt; when an audio input
-      device is authorized and opened via <a><code>
-      getUserMedia()</code></a>, this also authorizes access to any associated
+      device is permitted and opened via <a><code>
+      getUserMedia()</code></a>, this also permits access to any associated
       audio output devices (i.e., those with the same <dfn data-cite=
       "GETUSERMEDIA#dom-mediadeviceinfo-groupid"><code>
       groupId</code></dfn>). This conveniently handles the common case of wanting
