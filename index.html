@@ -38,6 +38,14 @@
     "!HTML5/embedded-content-0.html#htmlmediaelement"><code>
     HTMLMediaElement</code></dfn> [[!HTML5]] when the Audio Output Devices API is
     supported.</p>
+    <p>When the <code>HTMLMediaElement</code> constructor is invoked, the user
+    agent MUST add the following initializing step:</p>
+    <ol>
+      <li>
+        <p>Let the element have a <dfn>[[\SinkId]]</dfn> internal slot,
+        initialized to <code>null</code>.
+      </li>
+    </ol>
     <div>
       <pre class="idl">
       partial interface HTMLMediaElement {
@@ -52,7 +60,7 @@
           <dt><dfn><code>sinkId</code></dfn> of type <span class=
           "idlAttrType"><a>DOMString</a></span>, readonly</dt>
           <dd>
-            This attribute contains the ID of the audio device through which
+            <p>This attribute contains the ID of the audio device through which
             output is being delivered, or the empty string if output is
             delivered through the user-agent default device. If nonempty, this
             ID should be equal to the <dfn data-cite="!GETUSERMEDIA#dom-mediadeviceinfo-deviceid">
@@ -61,10 +69,9 @@
             MediaDeviceInfo</code></dfn> values returned from 
             <code>MediaDevices.<dfn data-cite=
             "!GETUSERMEDIA#dom-mediadevices-enumeratedevices">enumerateDevices()</dfn></code>
-            [[!GETUSERMEDIA]]. The value of this attribute is equal to the
-            argument passed to the last successful execution of <code><a>setSinkId()</a></code>, or the
-            empty string if <code><a>setSinkId()</a></code> has never
-            been called.
+            [[!GETUSERMEDIA]].</p>
+            <p>On getting, the
+            attribute MUST return the value of the <a>[[\SinkId]]</a> slot.</p>
           </dd>
         </dl>
       </section>
@@ -82,20 +89,28 @@
             steps:</p>
             <ol class="method-algorithm">
               <li>
-                <p>If <code>sinkId</code> is equal to the media element's
-                <a data-link-for="HTMLMediaElement"><code>sinkId</code></a> attribute,
+                <p>Let <var>element</var> be the <code><a>HTMLMediaElement</a></code>
+                object on which this method was invoked.</p>
+              </li>
+              <li>
+                <p>Let <var>sinkId</var> be the method's first argument.</p>
+              </li>
+              <li>
+                <p>If <var>sinkId</var> is equal to <var>element</var>'s
+                <a>[[\SinkId]]</a>,
                 return a promise resolved with <code>undefined</code>.</p>
               </li>
               <li>
-                <p>Let <var>promise</var> be a new promise.</p>
+                <p>Let <var>p</var> be a new promise.</p>
               </li>
               <li>
                 <p>Run the following substeps in parallel:</p>
                 <ol>
                   <li>
-                    <p>If <code>sinkId</code> does not match any audio output device
-                    identified by the result that would be provided by <a><code>enumerateDevices()</code></a>, reject <var>promise</var> with
-                    a new <dfn data-cite=
+                    <p>If <var>sinkId</var> does not match any audio output
+                    device identified by the result that would be provided by
+                    <a><code>enumerateDevices()</code></a>, reject
+                    <var>p</var> with a new <dfn data-cite=
                     "!HTML5/infrastructure.html#domexception"><code>
                     DOMException</code></dfn> whose name is <dfn data-cite=
                     "!HTML5/infrastructure.html#notfounderror"><code>
@@ -103,40 +118,44 @@
                   </li>
                   <li>
                     <p>If the application is not authorized to play audio through the
-                    device identified by <code>sinkId</code>, reject <var>promise</var>
+                    device identified by <var>sinkId</var>, reject <var>p</var>
                     with a new <a><code>
                     DOMException</code></a> whose name is <dfn data-cite="!HTML5/infrastructure.html#securityerror"><code>
                     SecurityError</code></dfn> and abort these substeps.</p>
                   </li>
                   <li>
-                    <p>Switch the underlying output device for the media element to the
-                    device identified by <code>sinkId</code>.</p>
+                    <p>Switch the underlying audio output device for <var>element</var>
+                    to the audio device identified by <var>sinkId</var>.</p>
                     <p class="note">If this substep is successful and the media
                     element's <dfn data-cite="!HTML5/embedded-content-0.html#dom-media-paused">
-                    <code>paused</code></dfn> attribute is false, audio will stop playing
+                    <code>paused</code></dfn> attribute is false, audio MUST stop playing
                     out of the device represented by the element's <a data-link-for=
                     "HTMLMediaElement"><code>sinkId</code></a> attribute and will start
                     playing out of the device identified by <code>sinkId</code></p>
                   </li>
                   <li>
-                    <p>If the preceding substep failed, reject <var>promise</var> with
-                    a new <a><code>
+                    <p>If the preceding substep failed, reject <var>p</var>
+                    with a new <a><code>
                     DOMException</code></a> whose name is <dfn data-cite=
                     "!HTML5/infrastructure.html#aborterror"><code>AbortError</code></dfn>
                     and abort these substeps.</p>
                   </li>
                   <li>
-                    <p>Update the internal state of the media element so that the value
-                    of its <a data-link-for="HTMLMediaElement"><code>sinkId</code></a>
-                    attribute corresponds to <code>sinkId</code>.</p>
-                  </li>
-                  <li>
-                    <p>Resolve <var>promise</var>.</p>
+                    <p>Queue a task that runs the following steps:</p>
+                    <ol>
+                      <li>
+                        <p>Set <var>element</var>'s <a>[[\SinkId]]</a> to
+                        <var>sinkId</var>.</p>
+                      </li>
+                      <li>
+                        <p>Resolve <var>p</var>.</p>
+                      </li>
+                    </ol>
                   </li>
                 </ol>
               </li>
               <li>
-                <p>Return <var>promise</var>.</p>
+                <p>Return <var>p</var>.</p>
               </li>
             </ol>
           </dd>
