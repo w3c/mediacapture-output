@@ -26,7 +26,7 @@
   <section class="informative" id="intro">
     <h2>Introduction</h2>
     <p>This proposal allows JavaScript to direct the audio output of a media
-    element to authorized devices other than the system or user agent default.
+    element to permitted devices other than the system or user agent default.
     This can be helpful in a variety of real-time communication scenarios as
     well as general media applications. For example, an application can use
     this API to programmatically direct output to a device such as a Bluetooth
@@ -38,6 +38,14 @@
     "!HTML5/embedded-content-0.html#htmlmediaelement"><code>
     HTMLMediaElement</code></dfn> [[!HTML5]] when the Audio Output Devices API is
     supported.</p>
+    <p>When the <code>HTMLMediaElement</code> constructor is invoked, the user
+    agent MUST add the following initializing step:</p>
+    <ol>
+      <li>
+        <p>Let the element have a <dfn>[[\SinkId]]</dfn> internal slot,
+        initialized to <code>null</code>.
+      </li>
+    </ol>
     <div>
       <pre class="idl">
       partial interface HTMLMediaElement {
@@ -52,7 +60,7 @@
           <dt><dfn><code>sinkId</code></dfn> of type <span class=
           "idlAttrType"><a>DOMString</a></span>, readonly</dt>
           <dd>
-            This attribute contains the ID of the audio device through which
+            <p>This attribute contains the ID of the audio device through which
             output is being delivered, or the empty string if output is
             delivered through the user-agent default device. If nonempty, this
             ID should be equal to the <dfn data-cite="!GETUSERMEDIA#dom-mediadeviceinfo-deviceid">
@@ -61,10 +69,9 @@
             MediaDeviceInfo</code></dfn> values returned from 
             <code>MediaDevices.<dfn data-cite=
             "!GETUSERMEDIA#dom-mediadevices-enumeratedevices">enumerateDevices()</dfn></code>
-            [[!GETUSERMEDIA]]. The value of this attribute is equal to the
-            argument passed to the last successful execution of <code><a>setSinkId()</a></code>, or the
-            empty string if <code><a>setSinkId()</a></code> has never
-            been called.
+            [[!GETUSERMEDIA]].</p>
+            <p>On getting, the
+            attribute MUST return the value of the <a>[[\SinkId]]</a> slot.</p>
           </dd>
         </dl>
       </section>
@@ -74,75 +81,87 @@
         class="methods">
           <dt><dfn><code>setSinkId</code></dfn></dt>
           <dd>
-            Sets the ID of the audio device through which audio output should
+            <p>Sets the ID of the audio device through which audio output should
             be rendered if the application is <a href=
-            "#privacy-considerations">authorized</a> to play out of a given
-            device.
+            "#privacy-considerations">permitted</a> to play out of a given
+            device.</p>
+            <p>When this method is invoked, the user agent must run the following
+            steps:</p>
+            <ol class="method-algorithm">
+              <li>
+                <p>Let <var>element</var> be the <code><a>HTMLMediaElement</a></code>
+                object on which this method was invoked.</p>
+              </li>
+              <li>
+                <p>Let <var>sinkId</var> be the method's first argument.</p>
+              </li>
+              <li>
+                <p>If <var>sinkId</var> is equal to <var>element</var>'s
+                <a>[[\SinkId]]</a>,
+                return a promise resolved with <code>undefined</code>.</p>
+              </li>
+              <li>
+                <p>Let <var>p</var> be a new promise.</p>
+              </li>
+              <li>
+                <p>Run the following substeps in parallel:</p>
+                <ol>
+                  <li>
+                    <p>If <var>sinkId</var> does not match any audio output
+                    device identified by the result that would be provided by
+                    <a><code>enumerateDevices()</code></a>, reject
+                    <var>p</var> with a new
+                    <a href="https://heycam.github.io/webidl/#idl-DOMException">
+                    <code>DOMException</code></a> whose name is
+                    <a href="https://heycam.github.io/webidl/#notfounderror">
+                    <code>NotFoundError</code></a> and abort these substeps.</p>
+                  </li>
+                  <li>
+                    <p>If the application is not permitted to play audio through the
+                    device identified by <var>sinkId</var>, reject <var>p</var>
+                    with a new <a><code>
+                    DOMException</code></a> whose name is
+                    <a href="https://heycam.github.io/webidl/#notallowederror">
+                    <code>NotAllowedError</code></a> and abort these substeps.</p>
+                  </li>
+                  <li>
+                    <p>Switch the underlying audio output device for <var>element</var>
+                    to the audio device identified by <var>sinkId</var>.</p>
+                    <p class="note">If this substep is successful and the media
+                    element's <dfn data-cite="!HTML5/embedded-content-0.html#dom-media-paused">
+                    <code>paused</code></dfn> attribute is false, audio MUST stop playing
+                    out of the device represented by the element's <a data-link-for=
+                    "HTMLMediaElement"><code>sinkId</code></a> attribute and will start
+                    playing out of the device identified by <code>sinkId</code></p>
+                  </li>
+                  <li>
+                    <p>If the preceding substep failed, reject <var>p</var>
+                    with a new <a><code>DOMException</code></a> whose name is
+                    <a href="https://heycam.github.io/webidl/#aborterror">
+                    <code>AbortError</code></a> and abort these substeps.</p>
+                  </li>
+                  <li>
+                    <p>Queue a task that runs the following steps:</p>
+                    <ol>
+                      <li>
+                        <p>Set <var>element</var>'s <a>[[\SinkId]]</a> to
+                        <var>sinkId</var>.</p>
+                      </li>
+                      <li>
+                        <p>Resolve <var>p</var>.</p>
+                      </li>
+                    </ol>
+                  </li>
+                </ol>
+              </li>
+              <li>
+                <p>Return <var>p</var>.</p>
+              </li>
+            </ol>
           </dd>
         </dl>
       </section>
     </div>
-    <p>When this method is invoked, the user agent must run the following
-    steps:</p>
-    <ol class="method-algorithm">
-      <li>
-        <p>If <code>sinkId</code> is equal to the media element's
-        <a data-link-for="HTMLMediaElement"><code>sinkId</code></a> attribute,
-        return a promise resolved with <code>undefined</code>.</p>
-      </li>
-      <li>
-        <p>Let <var>promise</var> be a new promise.</p>
-      </li>
-      <li>
-        <p>Run the following substeps in parallel:</p>
-        <ol>
-          <li>
-            <p>If <code>sinkId</code> does not match any audio output device
-            identified by the result that would be provided by <a><code>enumerateDevices()</code></a>, reject <var>promise</var> with
-            a new <dfn data-cite=
-            "!HTML5/infrastructure.html#domexception"><code>
-            DOMException</code></dfn> whose name is <dfn data-cite=
-            "!HTML5/infrastructure.html#notfounderror"><code>
-            NotFoundError</code></dfn> and abort these substeps.</p>
-          </li>
-          <li>
-            <p>If the application is not authorized to play audio through the
-            device identified by <code>sinkId</code>, reject <var>promise</var>
-            with a new <a><code>
-            DOMException</code></a> whose name is <dfn data-cite="!HTML5/infrastructure.html#securityerror"><code>
-            SecurityError</code></dfn> and abort these substeps.</p>
-          </li>
-          <li>
-            <p>Switch the underlying output device for the media element to the
-            device identified by <code>sinkId</code>.</p>
-            <p class="note">If this substep is successful and the media
-            element's <dfn data-cite="!HTML5/embedded-content-0.html#dom-media-paused">
-            <code>paused</code></dfn> attribute is false, audio will stop playing
-            out of the device represented by the element's <a data-link-for=
-            "HTMLMediaElement"><code>sinkId</code></a> attribute and will start
-            playing out of the device identified by <code>sinkId</code></p>
-          </li>
-          <li>
-            <p>If the preceding substep failed, reject <var>promise</var> with
-            a new <a><code>
-            DOMException</code></a> whose name is <dfn data-cite=
-            "!HTML5/infrastructure.html#aborterror"><code>AbortError</code></dfn>
-            and abort these substeps.</p>
-          </li>
-          <li>
-            <p>Update the internal state of the media element so that the value
-            of its <a data-link-for="HTMLMediaElement"><code>sinkId</code></a>
-            attribute corresponds to <code>sinkId</code>.</p>
-          </li>
-          <li>
-            <p>Resolve <var>promise</var>.</p>
-          </li>
-        </ol>
-      </li>
-      <li>
-        <p>Return <var>promise</var>.</p>
-      </li>
-    </ol>
     <section id="algorithms">
       <h3>Algorithms</h3>
       <section id="algorithms-sink-unavailable">
@@ -213,8 +232,8 @@
     <section id="privacy-consent">
       <h3>Consent</h3>
       <p>This document extends the Web platform with the ability to direct
-      audio output to non-default devices, when authorization is given.
-      Authorization is necessary because playing audio out of a non-default
+      audio output to non-default devices, when user permission is given.
+      User permission is necessary because playing audio out of a non-default
       device may be unexpected behavior to the user, and may cause a nuisance.
       For example, suppose a user is in a library or other quiet public place
       where she is using a laptop with system audio directed to a USB headset.
@@ -225,9 +244,10 @@
       <p>To prevent these kinds of nuisance scenarios, the user agent must
       acquire the user’s consent to access non-default audio output devices.
       This would prevent the library example outlined earlier, because the
-      application would not be authorized to play out audio from the system
+      application would not be permitted to play out audio from the system
       speakers.</p>
-      <p>The default audio output device is always authorized.</p>
+      <p>The specification adds no permission requirement to the default audio
+      output device.</p>
     </section>
     <section id="privacy-obtaining-consent">
       <h3>Obtaining Consent</h3>
@@ -239,8 +259,8 @@
       <p>However, implementations MUST support implicit consent via the
       <dfn data-cite="!GETUSERMEDIA#dom-mediadevices-getusermedia">
       <code>getUserMedia()</code></dfn> permission prompt; when an audio input
-      device is authorized and opened via <a><code>
-      getUserMedia()</code></a>, this also authorizes access to any associated
+      device is permitted and opened via <a><code>
+      getUserMedia()</code></a>, this also permits access to any associated
       audio output devices (i.e., those with the same <dfn data-cite=
       "GETUSERMEDIA#dom-mediadeviceinfo-groupid"><code>
       groupId</code></dfn>). This conveniently handles the common case of wanting
