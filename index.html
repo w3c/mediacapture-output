@@ -254,7 +254,7 @@
               <li><p>If the method call is not <a
               href="https://html.spec.whatwg.org/multipage/interaction.html#triggered-by-user-activation">
               triggered by user activation</a>,
-              return a promise rejected with a <code>DOMException</code< object whose
+              return a promise rejected with a <code>DOMException</code> object whose
               <code>name</code> attribute has the value <code>InvalidStateError</code>.
               </p></li>
               <li><p>Let <var>p</var> be a new promise.</p></li>
@@ -270,14 +270,15 @@
                     <var>p</var> with a new <code>DOMException</code> whose <code>name</code> attribute
                     has the value <code>NotAllowedError</code> and abort these steps.</p></li>
                   <li><p>Let <var>deviceInfo</var> be a new <code>MediaDeviceInfo</code> object to represent the selected audio output device.</p></li>
-                  <li><p>Update <var>deviceInfo</var> as done by the <a href="">enumerateDevices</a> algorithm steps 2.5.4 and 2.5.5.</p></li>
+                  <li><p>Update <var>deviceInfo</var> as done by the
+                  <code>enumeratedevices</code> algorithm steps 2.5.4 and 2.5.5.</p></li>
                   <li><p>Resolve <var>p</var> with <var>deviceInfo</var>.</p></li>
                 </ol>
               </li>
               <li><p>Return <var>p</var>.</p></li>
             </ol>
             <p>Once a device is exposed after a call to <code>requestAudioOutputDevice</code>, it MUST be listed by
-            <dfn data-cite="!GETUSERMEDIA#dom-mediadevices-enumeratedevices"><code>enumeratedevices</code></dfn>.</p>
+            <code>enumeratedevices</code>.</p>
             <p>If the promise returned by <code>requestAudioOutputDevice</code> is resolved,
             user activation is enabled when executing the promise fulfillment handlers.
             This allows starting to play audio or calling <code>setSinkId</code> synchronously
