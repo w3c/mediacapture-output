@@ -89,6 +89,24 @@
             steps:</p>
             <ol class="method-algorithm">
               <li>
+                <p>Let <var>document</var> be the
+                <a data-cite="!HTML/webappapis.html#current-settings-object">
+                current settings object</a>'s
+                <a data-cite="!HTML/webappapis.html#responsible-document">
+                responsible document</a>.</p>
+              </li>
+              <li>
+                <p>If <var>document</var> is not
+                <a data-cite="!HTML/iframe-embed-object.html#allowed-to-use">
+                allowed to use</a> the feature identified by
+                <a data-dfn-link-for="">"speaker"</a>, return a promise rejected
+                with a new
+                <a data-cite="WEBIDL#idl-DOMException"><code>DOMException</code></a>
+                whose name is
+                <a data-cite="WEBIDL#notallowederror"><code>NotAllowedError</code></a>.
+                </p>
+              </li>
+              <li>
                 <p>Let <var>element</var> be the <code><a>HTMLMediaElement</a></code>
                 object on which this method was invoked.</p>
               </li>
@@ -107,27 +125,38 @@
                 <p>Run the following substeps in parallel:</p>
                 <ol>
                   <li>
-                    <p>If <var>sinkId</var> is not the empty string and does not
-                    match any audio output device identified by the result that
-                    would be provided by <a><code>enumerateDevices()</code></a>,
-                    reject <var>p</var> with a new
-                    <a href="https://heycam.github.io/webidl/#idl-DOMException">
-                    <code>DOMException</code></a> whose name is
-                    <a href="https://heycam.github.io/webidl/#notfounderror">
-                    <code>NotFoundError</code></a> and abort these substeps.</p>
+                    <p>Let <var>device</var> be the system default audio output
+                    device.</p>
                   </li>
                   <li>
-                    <p>If <var>sinkId</var> is not the empty string, and the
-                    application would not be permitted to play audio through
-                    the device identified by <var>sinkId</var> if it weren't the
-                    current user agent default device, reject <var>p</var>
-                    with a new <a><code>DOMException</code></a> whose name is
-                    <a href="https://heycam.github.io/webidl/#notallowederror">
-                    <code>NotAllowedError</code></a> and abort these substeps.</p>
-                  </li>
+                    <p>If <var>sinkId</var> is not the empty string, run the
+                    following sub steps:<p>
+                    <ol>
+                      <li>
+                        <p>Set <var>device</var> to the audio output device whose
+                        <code>deviceId</code>, as would be provided by
+                        <a data-cite="GETUSERMEDIA#dom-mediadevices-enumeratedevices">
+                        <code>enumerateDevices()</code></a>, matches <var>sinkId</var>.
+                        If there is no match, reject <var>p</var> with a new
+                        <a data-cite="WEBIDL#idl-DOMException"><code>DOMException</code></a>
+                        whose name is
+                        <a data-cite="WEBIDL#notfounderror"><code>NotFoundError</code></a>,
+                        and abort all sub steps.</p>
+                      </li>
+                      <li>
+                        <p>If <var>document</var> is not <a>permitted to play
+                        audio through device</a> specified by <var>device</var>
+                        and <var>sinkId</var>, then the user agent MUST reject
+                        <var>p</var> with a new
+                        <a data-cite="WEBIDL#idl-DOMException"><code>DOMException</code></a>
+                        whose name is
+                        <a data-cite="WEBIDL#notallowederror"><code>NotAllowedError</code></a>,
+                        and abort these substeps.</p>
+                      </li>
+                    </ol>
                   <li>
                     <p>Switch the underlying audio output device for <var>element</var>
-                    to the audio device identified by <var>sinkId</var>.</p>
+                    to <var>device</var>.</p>
                     <p class="note">If this substep is successful and the media
                     element's <dfn data-cite="!HTML5/embedded-content-0.html#dom-media-paused">
                     <code>paused</code></dfn> attribute is false, audio MUST stop playing
@@ -137,9 +166,11 @@
                   </li>
                   <li>
                     <p>If the preceding substep failed, reject <var>p</var>
-                    with a new <a><code>DOMException</code></a> whose name is
-                    <a href="https://heycam.github.io/webidl/#aborterror">
-                    <code>AbortError</code></a> and abort these substeps.</p>
+                    with a new
+                    <a data-cite="WEBIDL#idl-DOMException"><code>DOMException</code></a>
+                    whose name is
+                    <a data-cite="WEBIDL#aborterror"><code>AbortError</code></a>,
+                    and abort these substeps.</p>
                   </li>
                   <li>
                     <p>Queue a task that runs the following steps:</p>
@@ -165,6 +196,55 @@
     </div>
     <section id="algorithms">
       <h3>Algorithms</h3>
+      <section id="algorithms-permitted-to-play-audio-through-device">
+        <h4>Permitted to play audio through device</h4>
+        <p>The <dfn>permitted to play audio through device</dfn> algorithm given
+        <var>document</var>, <var>device</var> and <var>deviceId</var>, is as
+        follows:</p>
+        <ol>
+          <li>
+            <p>Let <var>groupId</var> be the <code>groupId</code> that would be
+            exposed by
+            <a data-cite="GETUSERMEDIA#dom-mediadevices-enumeratedevices">
+              <code>enumerateDevices</code></a> for this <var>device</var>.
+            </p>
+          </li>
+          <li>
+            <p>Let <var>microphones</var> be a list of all
+            <code>"audioinput"</code> audio devices whose <code>groupId</code>
+            that would be exposed by
+            <a data-cite="GETUSERMEDIA#dom-mediadevices-enumeratedevices">
+              <code>enumerateDevice</code></a> matches <var>groupId</var>.</p>
+          </li>
+          <li>
+            <p>If <var>document</var> is currently capturing from or is
+            permitted to capture from any device in <var>microphones</var>,
+            return <code>true</code>.
+          </li>
+          <li>
+            <p>Let <var>descriptor</var> be a
+            <a data-cite="PERMISSIONS#dictdef-permissiondescriptor">
+              PermissionDescriptor</a> with its
+            <a data-cite="PERMISSIONS#dom-permissiondescriptor-name">name</a>
+            member set to
+            <a data-cite="PERMISSIONS#dom-permissionname-speaker"
+              ><code>"speaker-selection"</code></a>,
+            and its
+            <a data-cite="PERMISSIONS#dom-permissiondescriptor-deviceid">deviceId</a>
+            member set to <var>deviceId</var>.</p>
+          </li>
+          <li>
+            <p>If <var>descriptor</var>'s
+            <a data-cite="PERMISSIONS/#dom-permissionstate"
+              >permission state</a> is
+            <a data-cite="PERMISSIONS/#dom-permissionstate-granted"
+              ><code>"granted"</code></a>, return <code>true</code>.</p>
+          </li>
+          <li>
+            <p>Return <code>false</code>.</p>
+          </li>
+        </ol>
+      </section>
       <section id="algorithms-sink-unavailable">
         <h4>Sink no longer available</h4>
         <p>The audio device identified by a media element's <a data-link-for=
@@ -265,7 +345,10 @@
                   <li><p>If there is no audio output device, reject
                   <var>p</var> with a new <code>DOMException</code> whose <code>name</code> attribute
                   has the value <code>NotFoundError</code>.</p></li>
-                  <li><p>Prompt the user to choose an audio output device, with a PermissionDescriptor named "speaker".</p></li>
+                  <li><p><a
+                  data-cite="PERMISSIONS#prompt-the-user-to-choose">Prompt the user to choose</a>
+                  an audio output device, with a PermissionDescriptor named
+                  <code>"speaker-selection"</code>.</p></li>
                   <li><p>If the result of the request is "denied", reject
                     <var>p</var> with a new <code>DOMException</code> whose <code>name</code> attribute
                     has the value <code>NotAllowedError</code> and abort these steps.</p></li>
@@ -326,6 +409,31 @@
       groupId</code></dfn>). This conveniently handles the common case of wanting
       to route both input and output audio through a headset or speakerphone
       device.</p>
+    </section>
+    <section>
+      <h3 id=permissions-policy-integration>Permissions Policy Integration</h1>
+      <p>This specification defines one
+      <a href="https://www.w3.org/TR/feature-policy-1/#policy-controlled-feature">
+      policy-controlled feature</a> identified by the string
+      <code><dfn>"speaker-selection"</dfn></code>.
+      It has a
+      <a href="https://www.w3.org/TR/feature-policy-1/#default-allowlist">
+      default allowlist</a> of <code class=featurepolicy>"self"</code>.
+      <div class="note">
+        <p>A <a data-cite="DOM#concept-document">document</a>'s
+        <dfn data-cite="DOM#concept-document-permissions-policy">permissions policy</dfn>
+        determines whether any content in that document is
+        <a data-cite="!HTML/iframe-embed-object.html#allowed-to-use">
+        allowed to use</a> <code>selectAudioOutput</code> to prompt the user for
+        an audio output device, or
+        <a data-cite="!HTML/iframe-embed-object.html#allowed-to-use">
+        allowed to use</a> <code>setSinkId</code> to change the device
+        through which audio output should be rendered, to a non-system-default
+        user-permitted device. This is enforced by the
+        <a data-cite="PERMISSIONS#request-permission-to-use">
+        Request permission to use</a> algorithm.
+        </p>
+      </div>
     </section>
   </section>
   <section id="conformance">
