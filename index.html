@@ -107,20 +107,21 @@
                 <p>Run the following substeps in parallel:</p>
                 <ol>
                   <li>
-                    <p>If <var>sinkId</var> does not match any audio output
-                    device identified by the result that would be provided by
-                    <a><code>enumerateDevices()</code></a>, reject
-                    <var>p</var> with a new
+                    <p>If <var>sinkId</var> is not the empty string and does not
+                    match any audio output device identified by the result that
+                    would be provided by <a><code>enumerateDevices()</code></a>,
+                    reject <var>p</var> with a new
                     <a href="https://heycam.github.io/webidl/#idl-DOMException">
                     <code>DOMException</code></a> whose name is
                     <a href="https://heycam.github.io/webidl/#notfounderror">
                     <code>NotFoundError</code></a> and abort these substeps.</p>
                   </li>
                   <li>
-                    <p>If the application is not permitted to play audio through the
-                    device identified by <var>sinkId</var>, reject <var>p</var>
-                    with a new <a><code>
-                    DOMException</code></a> whose name is
+                    <p>If <var>sinkId</var> is not the empty string, and the
+                    application would not be permitted to play audio through
+                    the device identified by <var>sinkId</var> if it weren't the
+                    current user agent default device, reject <var>p</var>
+                    with a new <a><code>DOMException</code></a> whose name is
                     <a href="https://heycam.github.io/webidl/#notallowederror">
                     <code>NotAllowedError</code></a> and abort these substeps.</p>
                   </li>
