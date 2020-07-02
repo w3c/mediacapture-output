@@ -228,6 +228,66 @@
       </section>
     </section>
   </section>
+  <section id="mediadevices-extensions">
+    <h2><a><code>MediaDevices</code></a> Extensions</h2>
+    <p>This section specifies additions to the <dfn
+    data-cite="!GETUSERMEDIA#dom-mediadevices"><code>
+    MediaDevices</code></dfn> when the Audio Output Devices API is
+    supported.</p>
+    <div>
+      <pre class="idl">
+      partial interface MediaDevices {
+        Promise&lt;MediaDeviceInfo&gt; selectAudioOutput();
+      };
+      </pre>
+      <section>
+        <h2>Methods</h2>
+        <!-- FIXME: Update section to use links to promise resolve/reject spec, permission spec... -->
+        <dl data-link-for="MediaDevices" data-dfn-for="MediaDevices"
+        class="method">
+          <dt><dfn><code>selectAudioOutput</code></dfn></dt>
+          <dd>
+            <p>Prompts the user to select a specific audio output device.</p>
+            <p>When the <code>selectAudioOutput</code> method is called,
+            the User Agent MUST run the following steps:</p>
+            <ol>
+              <li><p>If the method call is not <a
+              href="https://html.spec.whatwg.org/multipage/interaction.html#triggered-by-user-activation">
+              triggered by user activation</a>,
+              return a promise rejected with a <code>DOMException</code> object whose
+              <code>name</code> attribute has the value <code>InvalidStateError</code>.
+              </p></li>
+              <li><p>Let <var>p</var> be a new promise.</p></li>
+              <li>
+                <p>Run the following steps in parallel:</p>
+                <ol>
+                  <li><p>Probe the User Agent for available audio output devices.</p></li>
+                  <li><p>If there is no audio output device, reject
+                  <var>p</var> with a new <code>DOMException</code> whose <code>name</code> attribute
+                  has the value <code>NotFoundError</code>.</p></li>
+                  <li><p>Prompt the user to choose an audio output device, with a PermissionDescriptor named "speaker".</p></li>
+                  <li><p>If the result of the request is "denied", reject
+                    <var>p</var> with a new <code>DOMException</code> whose <code>name</code> attribute
+                    has the value <code>NotAllowedError</code> and abort these steps.</p></li>
+                  <li><p>Let <var>deviceInfo</var> be a new <code>MediaDeviceInfo</code> object to represent the selected audio output device.</p></li>
+                  <li><p>Resolve <var>p</var> with <var>deviceInfo</var>.</p></li>
+                </ol>
+              </li>
+              <li><p>Return <var>p</var>.</p></li>
+            </ol>
+            <!-- FIXME: Introduce necessary hooks to expose a device in mediacapture main spec
+            and use it as a specific step in above algorithm. -->
+            <p>Once a device is exposed after a call to <code>selectAudioOutput</code>, it MUST be listed by
+            <code>enumerateDevices</code> for the current browsing context.</p>
+            <p>If the promise returned by <code>selectAudioOutput</code> is resolved,
+            user activation is enabled when executing the promise fulfillment handlers.
+            This allows starting to play audio or calling <code>setSinkId</code> synchronously
+            within these fulfillment handlers without any additional user gesture needed.</p>
+          </dd>
+        </dl>
+      </section>
+    </div>
+  </section>
   <section id="privacy-considerations">
     <h2>Privacy Considerations</h2>
     <section id="privacy-consent">
@@ -253,11 +313,10 @@
     <section id="privacy-obtaining-consent">
       <h3>Obtaining Consent</h3>
       <p>The user agent may explicitly obtain user consent to play audio out of
-      non-default output devices; the details of this process are left to the
-      implementation. For example, one approach could be to add an explicit
-      user prompt of the form "example.com wants to access all your sound
-      output devices".</p>
-      <p>However, implementations MUST support implicit consent via the
+      non-default output devices using <code>selectAudioOutput</code>.</p>
+      <!-- FIXME: Introduce necessary hooks in mediacapture-main spec to expose
+      audio output devices attached to the same device as microphone being used to capture. -->
+      <p>Implementations MUST also support implicit consent via the
       <dfn data-cite="!GETUSERMEDIA#dom-mediadevices-getusermedia">
       <code>getUserMedia()</code></dfn> permission prompt; when an audio input
       device is permitted and opened via <a><code>
