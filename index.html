@@ -89,6 +89,24 @@
             steps:</p>
             <ol class="method-algorithm">
               <li>
+                <p>Let <var>document</var> be the
+                <a data-cite="!HTML/webappapis.html#current-settings-object">
+                current settings object</a>'s
+                <a data-cite="!HTML/webappapis.html#responsible-document">
+                responsible document</a>.</p>
+              </li>
+              <li>
+                <p>If <var>document</var> is not
+                <a data-cite="!HTML/iframe-embed-object.html#allowed-to-use">
+                allowed to use</a> the feature identified by
+                <a data-dfn-link-for="">"speaker-selection"</a>, return a
+                promise rejected with a new
+                <a data-cite="WEBIDL#idl-DOMException"><code>DOMException</code></a>
+                whose name is
+                <a data-cite="WEBIDL#notallowederror"><code>NotAllowedError</code></a>.
+                </p>
+              </li>
+              <li>
                 <p>Let <var>element</var> be the <code><a>HTMLMediaElement</a></code>
                 object on which this method was invoked.</p>
               </li>
@@ -137,9 +155,10 @@
                   </li>
                   <li>
                     <p>If the preceding substep failed, reject <var>p</var>
-                    with a new <a><code>DOMException</code></a> whose name is
-                    <a href="https://heycam.github.io/webidl/#aborterror">
-                    <code>AbortError</code></a> and abort these substeps.</p>
+                    with a new <a data-cite="WEBIDL#idl-DOMException">
+                    <code>DOMException</code></a> whose name is
+                    <a data-cite="WEBIDL#aborterror"><code>AbortError</code></a>,
+                    and abort these substeps.</p>
                   </li>
                   <li>
                     <p>Queue a task that runs the following steps:</p>
@@ -265,7 +284,9 @@
                   <li><p>If there is no audio output device, reject
                   <var>p</var> with a new <code>DOMException</code> whose <code>name</code> attribute
                   has the value <code>NotFoundError</code>.</p></li>
-                  <li><p>Prompt the user to choose an audio output device, with a PermissionDescriptor named "speaker".</p></li>
+                  <li><p><a data-cite="PERMISSIONS#prompt-the-user-to-choose">
+                  Prompt the user to choose</a> an audio output device, with a PermissionDescriptor
+                  named <code>"speaker-selection"</code>.</p></li>
                   <li><p>If the result of the request is "denied", reject
                     <var>p</var> with a new <code>DOMException</code> whose <code>name</code> attribute
                     has the value <code>NotAllowedError</code> and abort these steps.</p></li>
@@ -326,6 +347,31 @@
       groupId</code></dfn>). This conveniently handles the common case of wanting
       to route both input and output audio through a headset or speakerphone
       device.</p>
+    </section>
+    <section>
+      <h3 id=permissions-policy-integration>Permissions Policy Integration</h3>
+      <p>This specification defines one
+      <a href="https://www.w3.org/TR/feature-policy-1/#policy-controlled-feature">
+      policy-controlled feature</a> identified by the string
+      <code><dfn>"speaker-selection"</dfn></code>.
+      It has a
+      <a href="https://www.w3.org/TR/feature-policy-1/#default-allowlist">
+      default allowlist</a> of <code class=featurepolicy>"self"</code>.
+      <div class="note">
+        <p>A <a data-cite="DOM#concept-document">document</a>'s
+        <dfn data-cite="HTML#concept-document-permissions-policy">permissions policy</dfn>
+        determines whether any content in that document is
+        <a data-cite="!HTML/iframe-embed-object.html#allowed-to-use">
+        allowed to use</a> <code>selectAudioOutput</code> to prompt the user for
+        an audio output device, or
+        <a data-cite="!HTML/iframe-embed-object.html#allowed-to-use">
+        allowed to use</a> <code>setSinkId</code> to change the device
+        through which audio output should be rendered, to a non-system-default
+        user-permitted device. For <code>selectAudioOutput</code> this is
+        enforced by the <a data-cite="PERMISSIONS#prompt-the-user-to-choose">
+        prompt the user to choose</a> algorithm.
+        </p>
+      </div>
     </section>
   </section>
   <section id="conformance">
