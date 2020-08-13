@@ -256,7 +256,7 @@
     <div>
       <pre class="idl">
       partial interface MediaDevices {
-        Promise&lt;MediaDeviceInfo&gt; selectAudioOutput();
+        Promise&lt;MediaDeviceInfo&gt; selectAudioOutput(optional AudioOutputOptions options = {});
       };
       </pre>
       <section>
@@ -276,6 +276,8 @@
               return a promise rejected with a <code>DOMException</code> object whose
               <code>name</code> attribute has the value <code>InvalidStateError</code>.
               </p></li>
+              <li><p>Let <var>options</var> be the method's first argument.</p></li>
+              <li><p>Let <var>deviceId</var> be <var>options</var><code>.deviceId</code>.</p></li>
               <li><p>Let <var>p</var> be a new promise.</p></li>
               <li>
                 <p>Run the following steps in parallel:</p>
@@ -284,6 +286,19 @@
                   <li><p>If there is no audio output device, reject
                   <var>p</var> with a new <code>DOMException</code> whose <code>name</code> attribute
                   has the value <code>NotFoundError</code>.</p></li>
+                  <li>
+                    <p>If <var>deviceId</code> is not <code>""</code>, and
+                    matches an id previously exposed by
+                    <code>selectAudioOutput</code> in an earlier browsing
+                    session, the user agent MAY decide to run the following
+                    sub steps:</p>
+                    <ol>
+                      <li>
+                        <p>Let <var>device</var> be the device identified by <var>deviceId</var>.</p>
+                      </li>
+                      <li><p>Resolve <var>p</var> with either <var>deviceInfo</var>.</p></li>
+                    </ol>
+                  </li>
                   <li><p><a data-cite="PERMISSIONS#prompt-the-user-to-choose">
                   Prompt the user to choose</a> an audio output device, with a PermissionDescriptor
                   named <code>"speaker-selection"</code>.</p></li>
@@ -306,6 +321,34 @@
             within these fulfillment handlers without any additional user gesture needed.</p>
           </dd>
         </dl>
+      </section>
+      <section>
+        <h4>AudioOutputOptions dictionary</h4>
+        <p>This dictionary describe the options that can be used to obtain
+        access to an audio output device.</p>
+        <div>
+          <pre class="idl"
+>dictionary AudioOutputOptions {
+  DOMString deviceId = "";
+};</pre>
+          <section>
+            <h2>Dictionary <dfn>AudioOutputOptions</dfn> Members</h2>
+            <dl data-link-for="AudioOutputOptions" data-dfn-for="AudioOutputOptions"
+            class="dictionary-members">
+              <dt data-tests="RTCPeerConnection-restartIce.https.html"><dfn data-idl>deviceId</dfn> of type <span class=
+                "idlMemberType">DOMString</span>, defaulting to
+              <code>""</code></dt>
+              <dd>
+                <p>When the value of this dictionary member is not <code>""</code>,
+                and matches the id previously exposed by
+                <code>selectAudioOutput</code> in an earlier session, the user
+                agent MAY opt to skip prompting the user in favor of resolving
+                with this id or a new rotated id for the same device, assuming
+                that device is currently available.</p>
+              </dd>
+            </dl>
+          </section>
+        </div>
       </section>
     </div>
   </section>
