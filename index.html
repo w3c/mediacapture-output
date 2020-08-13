@@ -360,12 +360,19 @@
                 "idlMemberType">DOMString</span>, defaulting to
               <code>""</code></dt>
               <dd>
-                <p>When the value of this dictionary member is not <code>""</code>,
-                and matches the id previously exposed by
+                <p class="fingerprint">When the value of this dictionary member
+                is not <code>""</code>, and matches the id previously exposed by
                 <code>selectAudioOutput</code> in an earlier session, the user
                 agent MAY opt to skip prompting the user in favor of resolving
                 with this id or a new rotated id for the same device, assuming
                 that device is currently available.</p>
+                <p class="note">Applications that wish to rely on user agents
+                supporting persisted device ids must pass these through
+                <code>selectAudioOutput</code> successfully before they will
+                work with <code>setSinkId</code>. The reason for this is that it
+                exposes fingerprinting information, but at the risk of prompting
+                the user if the device is not available or the user agent
+                decides not to honor the device id.</p>
               </dd>
             </dl>
           </section>
