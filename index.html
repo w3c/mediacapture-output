@@ -293,14 +293,17 @@
                       ><code>"denied"</code></a>, reject
                       <var>p</var> with a new <code>DOMException</code> whose
                       <code>name</code> attribute has the value
-                    <code>NotAllowedError</code> and abort these steps.</p>
+                    <code>NotAllowedError</code>, and abort these steps.</p>
                   </li>
                   <li><p>Probe the User Agent for available audio output devices.</p></li>
-                  <li><p>If there is no audio output device, reject
-                  <var>p</var> with a new <code>DOMException</code> whose <code>name</code> attribute
-                  has the value <code>NotFoundError</code>.</p></li>
                   <li>
-                    <p class="fingerprint">If <var>deviceId</code> is not
+                    <p>If there is no audio output device, reject <var>p</var>
+                    with a new <code>DOMException</code> whose <code>name</code>
+                    attribute has the value <code>NotFoundError</code> and abort
+                    these steps.</p>
+                  </li>
+                  <li>
+                    <p class="fingerprint">If <var>deviceId</var> is not
                     <code>""</code> and matches an id previously exposed by
                     <code>selectAudioOutput</code> in an earlier browsing
                     session, the user agent MAY decide, based on its previous
@@ -309,18 +312,18 @@
                     <ol>
                       <li>
                         <p>Let <var>device</var> be the device identified by
-                        <var>deviceId</var>.</p>
+                        <var>deviceId</var>, if available.</p>
                       </li>
                       <li><p>If <var>device</var> is available, resolve
                       <var>p</var> with either <var>deviceId</var> or a freshly
-                      rotated deviceId for <var>device</var>, and abort the
+                      rotated device id for <var>device</var>, and abort the
                       in-parallel steps.</p></li>
                     </ol>
                   </li>
                   <li><p><a data-cite="PERMISSIONS#prompt-the-user-to-choose">
                   Prompt the user to choose</a> an audio output device, with
                   <var>descriptor</var>.</p></li>
-                  <li><p>If the result of the request is "denied", reject
+                  <li><p>If the result of the request is <code>"denied"</code>, reject
                     <var>p</var> with a new <code>DOMException</code> whose <code>name</code> attribute
                     has the value <code>NotAllowedError</code> and abort these steps.</p></li>
                   <li><p>Let <var>deviceInfo</var> be a new <code>MediaDeviceInfo</code> object to represent the selected audio output device.</p></li>
