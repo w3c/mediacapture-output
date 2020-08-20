@@ -256,7 +256,7 @@
     <div>
       <pre class="idl">
       partial interface MediaDevices {
-        Promise&lt;MediaDeviceInfo&gt; selectAudioOutput();
+        Promise&lt;MediaDeviceInfo&gt; selectAudioOutput(optional AudioOutputOptions options = {});
       };
       </pre>
       <section>
@@ -276,18 +276,54 @@
               return a promise rejected with a <code>DOMException</code> object whose
               <code>name</code> attribute has the value <code>InvalidStateError</code>.
               </p></li>
+              <li><p>Let <var>options</var> be the method's first argument.</p></li>
+              <li><p>Let <var>deviceId</var> be <var>options</var><code>.deviceId</code>.</p></li>
               <li><p>Let <var>p</var> be a new promise.</p></li>
               <li>
                 <p>Run the following steps in parallel:</p>
                 <ol>
+                  <li><p>Let <var>descriptor</var> be a PermissionDescriptor named
+                    <code>"speaker-selection"</code>.</p>
+                  </li>
+                  <li>
+                    <p>If <var>descriptor</var>'s
+                    <a data-cite="PERMISSIONS/#permission-state"
+                      >permission state</a> is
+                    <a data-cite="PERMISSIONS/#dom-permissionstate-granted"
+                      ><code>"denied"</code></a>, reject
+                      <var>p</var> with a new <code>DOMException</code> whose
+                      <code>name</code> attribute has the value
+                    <code>NotAllowedError</code>, and abort these steps.</p>
+                  </li>
                   <li><p>Probe the User Agent for available audio output devices.</p></li>
-                  <li><p>If there is no audio output device, reject
-                  <var>p</var> with a new <code>DOMException</code> whose <code>name</code> attribute
-                  has the value <code>NotFoundError</code>.</p></li>
+                  <li>
+                    <p>If there is no audio output device, reject <var>p</var>
+                    with a new <code>DOMException</code> whose <code>name</code>
+                    attribute has the value <code>NotFoundError</code> and abort
+                    these steps.</p>
+                  </li>
+                  <li>
+                    <p class="fingerprint">If <var>deviceId</var> is not
+                    <code>""</code> and matches an id previously exposed by
+                    <code>selectAudioOutput</code> in an earlier browsing
+                    session, the user agent MAY decide, based on its previous
+                    decision of whether to persist this id or not for this set
+                    of origins, to run the following sub steps:</p>
+                    <ol>
+                      <li>
+                        <p>Let <var>device</var> be the device identified by
+                        <var>deviceId</var>, if available.</p>
+                      </li>
+                      <li><p>If <var>device</var> is available, resolve
+                      <var>p</var> with either <var>deviceId</var> or a freshly
+                      rotated device id for <var>device</var>, and abort the
+                      in-parallel steps.</p></li>
+                    </ol>
+                  </li>
                   <li><p><a data-cite="PERMISSIONS#prompt-the-user-to-choose">
-                  Prompt the user to choose</a> an audio output device, with a PermissionDescriptor
-                  named <code>"speaker-selection"</code>.</p></li>
-                  <li><p>If the result of the request is "denied", reject
+                  Prompt the user to choose</a> an audio output device, with
+                  <var>descriptor</var>.</p></li>
+                  <li><p>If the result of the request is <code>"denied"</code>, reject
                     <var>p</var> with a new <code>DOMException</code> whose <code>name</code> attribute
                     has the value <code>NotAllowedError</code> and abort these steps.</p></li>
                   <li><p>Let <var>deviceInfo</var> be a new <code>MediaDeviceInfo</code> object to represent the selected audio output device.</p></li>
@@ -306,6 +342,41 @@
             within these fulfillment handlers without any additional user gesture needed.</p>
           </dd>
         </dl>
+      </section>
+      <section>
+        <h4>AudioOutputOptions dictionary</h4>
+        <p>This dictionary describes the options that can be used to obtain
+        access to an audio output device.</p>
+        <div>
+          <pre class="idl"
+>dictionary AudioOutputOptions {
+  DOMString deviceId = "";
+};</pre>
+          <section>
+            <h2>Dictionary <dfn>AudioOutputOptions</dfn> Members</h2>
+            <dl data-link-for="AudioOutputOptions" data-dfn-for="AudioOutputOptions"
+            class="dictionary-members">
+              <dt><dfn data-idl>deviceId</dfn> of type <span class=
+                "idlMemberType">DOMString</span>, defaulting to
+              <code>""</code></dt>
+              <dd>
+                <p class="fingerprint">When the value of this dictionary member
+                is not <code>""</code>, and matches the id previously exposed by
+                <code>selectAudioOutput</code> in an earlier session, the user
+                agent MAY opt to skip prompting the user in favor of resolving
+                with this id or a new rotated id for the same device, assuming
+                that device is currently available.</p>
+                <p class="note">Applications that wish to rely on user agents
+                supporting persisted device ids must pass these through
+                <code>selectAudioOutput</code> successfully before they will
+                work with <code>setSinkId</code>. The reason for this is that it
+                exposes fingerprinting information, but at the risk of prompting
+                the user if the device is not available or the user agent
+                decides not to honor the device id.</p>
+              </dd>
+            </dl>
+          </section>
+        </div>
       </section>
     </div>
   </section>
