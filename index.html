@@ -5,11 +5,9 @@
   <link href="style.css" rel="stylesheet">
   <title>Audio Output Devices API</title>
   <script class="remove" src=
-  "https://www.w3.org/Tools/respec/respec-w3c-common" type="text/javascript">
-  // &lt;!-- keep this comment --&gt; //
+  "https://www.w3.org/Tools/respec/respec-w3c">
   </script>
-  <script class="remove" src="script.js" type="text/javascript">
-  // &lt;!-- keep this comment --&gt; //
+  <script class="remove" src="script.js">
   </script>
 </head>
 <body>
@@ -33,12 +31,10 @@
     headset or speakerphone.</p>
   </section>
   <section id="htmlmediaelement-extensions">
-    <h2><a><code>HTMLMediaElement</code></a> Extensions</h2>
-    <p>This section specifies additions to the <dfn data-cite=
-    "!HTML5/embedded-content-0.html#htmlmediaelement"><code>
-    HTMLMediaElement</code></dfn> [[!HTML5]] when the Audio Output Devices API is
+    <h2>{{HTMLMediaElement}} Extensions</h2>
+    <p>This section specifies additions to the {{HTMLMediaElement}} [[HTML]] when the Audio Output Devices API is
     supported.</p>
-    <p>When the <code>HTMLMediaElement</code> constructor is invoked, the user
+    <p>When the {{HTMLMediaElement}} constructor is invoked, the user
     agent MUST add the following initializing step:</p>
     <ol>
       <li>
@@ -57,16 +53,13 @@
         <h2>Attributes</h2>
         <dl data-link-for="HTMLMediaElement" data-dfn-for="HTMLMediaElement"
         class="attributes">
-          <dt><dfn><code>sinkId</code></dfn> of type <span class=
-          "idlAttrType"><a>DOMString</a></span>, readonly</dt>
+          <dt><dfn>sinkId</dfn> of type {{DOMString}}, readonly</dt>
           <dd>
             <p>This attribute contains the ID of the audio device through which
             output is being delivered, or the empty string if output is
             delivered through the user-agent default device. If nonempty, this
             ID should be equal to the <dfn data-cite="!GETUSERMEDIA#dom-mediadeviceinfo-deviceid">
-            <code>deviceId</code></dfn> attribute of one of the <dfn data-cite=
-            "!GETUSERMEDIA#idl-def-mediadeviceinfo"><code>
-            MediaDeviceInfo</code></dfn> values returned from 
+            <code>deviceId</code></dfn> attribute of one of the {{MediaDeviceInfo}} values returned from 
             <code>MediaDevices.<dfn data-cite=
             "!GETUSERMEDIA#dom-mediadevices-enumeratedevices">enumerateDevices()</dfn></code>
             [[!GETUSERMEDIA]].</p>
@@ -79,7 +72,7 @@
         <h2>Methods</h2>
         <dl data-link-for="HTMLMediaElement" data-dfn-for="HTMLMediaElement"
         class="methods">
-          <dt><dfn><code>setSinkId</code></dfn></dt>
+          <dt><dfn>setSinkId</dfn></dt>
           <dd>
             <p>Sets the ID of the audio device through which audio output should
             be rendered if the application is <a href=
@@ -100,14 +93,12 @@
                 <a data-cite="!HTML/iframe-embed-object.html#allowed-to-use">
                 allowed to use</a> the feature identified by
                 <a data-dfn-link-for="">"speaker-selection"</a>, return a
-                promise rejected with a new
-                <a data-cite="WEBIDL#idl-DOMException"><code>DOMException</code></a>
-                whose name is
-                <a data-cite="WEBIDL#notallowederror"><code>NotAllowedError</code></a>.
+                promise rejected with a new {{DOMException}}
+                whose name is {{NotAllowedError}}.
                 </p>
               </li>
               <li>
-                <p>Let <var>element</var> be the <code><a>HTMLMediaElement</a></code>
+                <p>Let <var>element</var> be the {{HTMLMediaElement}}
                 object on which this method was invoked.</p>
               </li>
               <li>
@@ -129,35 +120,29 @@
                     match any audio output device identified by the result that
                     would be provided by <a><code>enumerateDevices()</code></a>,
                     reject <var>p</var> with a new
-                    <a href="https://heycam.github.io/webidl/#idl-DOMException">
-                    <code>DOMException</code></a> whose name is
-                    <a href="https://heycam.github.io/webidl/#notfounderror">
-                    <code>NotFoundError</code></a> and abort these substeps.</p>
+                    {{DOMException}} whose name is
+                    {{NotFoundError}} and abort these substeps.</p>
                   </li>
                   <li>
                     <p>If <var>sinkId</var> is not the empty string, and the
                     application would not be permitted to play audio through
                     the device identified by <var>sinkId</var> if it weren't the
                     current user agent default device, reject <var>p</var>
-                    with a new <a><code>DOMException</code></a> whose name is
-                    <a href="https://heycam.github.io/webidl/#notallowederror">
-                    <code>NotAllowedError</code></a> and abort these substeps.</p>
+                    with a new {{DOMException}} whose name is
+                    {{NotAllowedError}} and abort these substeps.</p>
                   </li>
                   <li>
                     <p>Switch the underlying audio output device for <var>element</var>
                     to the audio device identified by <var>sinkId</var>.</p>
                     <p class="note">If this substep is successful and the media
-                    element's <dfn data-cite="!HTML5/embedded-content-0.html#dom-media-paused">
-                    <code>paused</code></dfn> attribute is false, audio MUST stop playing
-                    out of the device represented by the element's <a data-link-for=
-                    "HTMLMediaElement"><code>sinkId</code></a> attribute and will start
-                    playing out of the device identified by <code>sinkId</code></p>
+                    element's {{HTMLMediaElement/paused}} attribute is false, audio MUST stop playing
+                    out of the device represented by the element's {{HTMLMediaElement/sinkId}} attribute and will start
+                    playing out of the device identified by <var>sinkId</var></p>
                   </li>
                   <li>
                     <p>If the preceding substep failed, reject <var>p</var>
-                    with a new <a data-cite="WEBIDL#idl-DOMException">
-                    <code>DOMException</code></a> whose name is
-                    <a data-cite="WEBIDL#aborterror"><code>AbortError</code></a>,
+                    with a new {{DOMException}} whose name is
+                    {{AbortError}},
                     and abort these substeps.</p>
                   </li>
                   <li>
@@ -186,14 +171,13 @@
       <h3>Algorithms</h3>
       <section id="algorithms-sink-unavailable">
         <h4>Sink no longer available</h4>
-        <p>The audio device identified by a media element's <a data-link-for=
-        "HTMLMediaElement"><code>sinkId</code></a> attribute may become
-        unavailable, for example if it is unplugged.</p>
-        <p>When the audio device identified by the <a data-link-for=
-        "HTMLMediaElement"><code>sinkId</code></a> attribute is no longer
+        <p>The audio device identified by a media element's {{HTMLMediaElement/sinkId}} attribute may become
+        <dfn>unavailable</dfn>, for example if it is unplugged.</p>
+        <p>When the audio device identified by the {{HTMLMediaElement/sinkId}}
+        attribute is no longer
         available, the user agent must take no action. For example, if the
-        media element's <a><code>
-        paused</code></a> attribute is false when the device identified by the
+        media element's {{HTMLMediaElement/paused}}
+        attribute is false when the device identified by the
         sinkId is no longer available, then playback will continue as normal.
         In this case, audio will not be rendered because the device to which
         the media element is attached is unavailable.</p>
@@ -202,20 +186,16 @@
         change, the application can listen to the <dfn data-cite="GETUSERMEDIA#event-mediadevices-devicechange">
         <code>devicechange</code></dfn> event and query <a>
         <code>enumerateDevices()</code></a> for the list of updated devices. If
-        the value of the media element's <a data-link-for=
-        "HTMLMediaElement"><code>sinkId</code></a> attribute is no longer
+        the value of the media element's {{HTMLMediaElement/sinkId}} attribute is no longer
         present as the <a>
-        <code>deviceId</code></a> attribute in the returned list of <a><code>
-        MediaDeviceInfo</code></a>s, the device is no longer available and the
+        <code>deviceId</code></a> attribute in the returned list of {{MediaDeviceInfo}}s, the device is no longer available and the
         application can choose to react accordingly.</p>
       </section>
       <section id="algorithms-new-sink-available">
         <h4>New sink available</h4>
         <p>New audio devices may become available to the user agent, or an
-        audio device (identified by a media element's <a data-link-for=
-        "HTMLMediaElement"><code>sinkId</code></a> attribute) that had
-        previously become <a href=
-        "#algorithms-sink-unavailable">unavailable</a> may become available
+        audio device (identified by a media element's {{HTMLMediaElement/sinkId}} attribute) that had
+        previously become [= unavailable =] may become available
         again, for example, if it is unplugged and later plugged back in.</p>
         <p>In this scenario, the user agent must run the following steps:</p>
         <ol class="method-algorithm">
@@ -224,15 +204,14 @@
             device.</p>
           </li>
           <li>
-            <p>For each media element whose <a data-link-for=
-            "HTMLMediaElement"><code>sinkId</code></a> attribute is equal to
+            <p>For each media element whose {{HTMLMediaElement/sinkId}} attribute is equal to
             <var>sinkId</var>:</p>
             <ol>
               <li>
-                <p>If the media element's <a>
-                <code>paused</code></a> attribute is false, start rendering
+                <p>If the media element's
+                {{HTMLMediaElement/paused}} attribute is false, start rendering
                 this object's audio out of the device represented by the
-                <a data-link-for="HTMLMediaElement"><code>sinkId</code></a>
+                {{HTMLMediaElement/sinkId}}
                 attribute.</p>
               </li>
             </ol>
@@ -264,17 +243,17 @@
         <!-- FIXME: Update section to use links to promise resolve/reject spec, permission spec... -->
         <dl data-link-for="MediaDevices" data-dfn-for="MediaDevices"
         class="method">
-          <dt><dfn><code>selectAudioOutput</code></dfn></dt>
+          <dt><dfn>selectAudioOutput</dfn></dt>
           <dd>
             <p>Prompts the user to select a specific audio output device.</p>
-            <p>When the <code>selectAudioOutput</code> method is called,
+            <p>When the {{selectAudioOutput}} method is called,
             the User Agent MUST run the following steps:</p>
             <ol>
-              <li><p>If the method call is not <a
+              <li><p>If the method call is not <a class=FIXME
               href="https://html.spec.whatwg.org/multipage/interaction.html#triggered-by-user-activation">
               triggered by user activation</a>,
-              return a promise rejected with a <code>DOMException</code> object whose
-              <code>name</code> attribute has the value <code>InvalidStateError</code>.
+              return a promise rejected with a {{DOMException}} object whose
+              {{DOMException/name}} attribute has the value {{InvalidStateError}}.
               </p></li>
               <li><p>Let <var>options</var> be the method's first argument.</p></li>
               <li><p>Let <var>deviceId</var> be <var>options</var><code>.deviceId</code>.</p></li>
@@ -282,30 +261,27 @@
               <li>
                 <p>Run the following steps in parallel:</p>
                 <ol>
-                  <li><p>Let <var>descriptor</var> be a PermissionDescriptor named
-                    <code>"speaker-selection"</code>.</p>
+                  <li><p>Let <var>descriptor</var> be a {{PermissionDescriptor}} named
+                    {{PermissionName/"speaker-selection"}}.</p>
                   </li>
                   <li>
-                    <p>If <var>descriptor</var>'s
-                    <a data-cite="PERMISSIONS/#permission-state"
-                      >permission state</a> is
-                    <a data-cite="PERMISSIONS/#dom-permissionstate-granted"
-                      ><code>"denied"</code></a>, reject
-                      <var>p</var> with a new <code>DOMException</code> whose
-                      <code>name</code> attribute has the value
-                    <code>NotAllowedError</code>, and abort these steps.</p>
+                    <p>If <var>descriptor</var>'s [=permission state=] is
+                      {{PermissionState/"denied"}}, reject
+                      <var>p</var> with a new {{DOMException}} whose
+                      {{DOMException/name}} attribute has the value
+                    {{NotAllowedError}}, and abort these steps.</p>
                   </li>
                   <li><p>Probe the User Agent for available audio output devices.</p></li>
                   <li>
                     <p>If there is no audio output device, reject <var>p</var>
-                    with a new <code>DOMException</code> whose <code>name</code>
-                    attribute has the value <code>NotFoundError</code> and abort
+                    with a new {{DOMException}} whose {{DOMException/name}}
+                    attribute has the value {{NotFoundError}} and abort
                     these steps.</p>
                   </li>
                   <li>
                     <p class="fingerprint">If <var>deviceId</var> is not
                     <code>""</code> and matches an id previously exposed by
-                    <code>selectAudioOutput</code> in an earlier browsing
+                    {{MediaDevices/selectAudioOutput}} in an earlier browsing
                     session, the user agent MAY decide, based on its previous
                     decision of whether to persist this id or not for this set
                     of origins, to run the following sub steps:</p>
@@ -320,13 +296,12 @@
                       in-parallel steps.</p></li>
                     </ol>
                   </li>
-                  <li><p><a data-cite="PERMISSIONS#prompt-the-user-to-choose">
-                  Prompt the user to choose</a> an audio output device, with
+                  <li><p>[=Prompt the user to choose=] an audio output device, with
                   <var>descriptor</var>.</p></li>
-                  <li><p>If the result of the request is <code>"denied"</code>, reject
-                    <var>p</var> with a new <code>DOMException</code> whose <code>name</code> attribute
-                    has the value <code>NotAllowedError</code> and abort these steps.</p></li>
-                  <li><p>Let <var>deviceInfo</var> be a new <code>MediaDeviceInfo</code> object to represent the selected audio output device.</p></li>
+                  <li><p>If the result of the request is {{PermissionState/"denied"}}, reject
+                    <var>p</var> with a new {{DOMException}} whose {{DOMException/name}} attribute
+                    has the value {{NotAllowedError}} and abort these steps.</p></li>
+                  <li><p>Let <var>deviceInfo</var> be a new {{MediaDeviceInfo}} object to represent the selected audio output device.</p></li>
                   <li><p>Resolve <var>p</var> with <var>deviceInfo</var>.</p></li>
                 </ol>
               </li>
@@ -334,11 +309,11 @@
             </ol>
             <!-- FIXME: Introduce necessary hooks to expose a device in mediacapture main spec
             and use it as a specific step in above algorithm. -->
-            <p>Once a device is exposed after a call to <code>selectAudioOutput</code>, it MUST be listed by
+            <p>Once a device is exposed after a call to {{MediaDevices/selectAudioOutput}}, it MUST be listed by
             <code>enumerateDevices</code> for the current browsing context.</p>
-            <p>If the promise returned by <code>selectAudioOutput</code> is resolved,
+            <p>If the promise returned by {{MediaDevices/selectAudioOutput}} is resolved,
             user activation is enabled when executing the promise fulfillment handlers.
-            This allows starting to play audio or calling <code>setSinkId</code> synchronously
+            This allows starting to play audio or calling {{HTMLMediaElement/setSinkId}} synchronously
             within these fulfillment handlers without any additional user gesture needed.</p>
           </dd>
         </dl>
@@ -356,20 +331,19 @@
             <h2>Dictionary <dfn>AudioOutputOptions</dfn> Members</h2>
             <dl data-link-for="AudioOutputOptions" data-dfn-for="AudioOutputOptions"
             class="dictionary-members">
-              <dt><dfn data-idl>deviceId</dfn> of type <span class=
-                "idlMemberType">DOMString</span>, defaulting to
+              <dt><dfn data-idl>deviceId</dfn> of type {{DOMString}}, defaulting to
               <code>""</code></dt>
               <dd>
                 <p class="fingerprint">When the value of this dictionary member
                 is not <code>""</code>, and matches the id previously exposed by
-                <code>selectAudioOutput</code> in an earlier session, the user
+                {{MediaDevices/selectAudioOutput}} in an earlier session, the user
                 agent MAY opt to skip prompting the user in favor of resolving
                 with this id or a new rotated id for the same device, assuming
                 that device is currently available.</p>
                 <p class="note">Applications that wish to rely on user agents
                 supporting persisted device ids must pass these through
-                <code>selectAudioOutput</code> successfully before they will
-                work with <code>setSinkId</code>. The reason for this is that it
+                {{MediaDevices/selectAudioOutput}} successfully before they will
+                work with {{HTMLMediaElement/setSinkId}}. The reason for this is that it
                 exposes fingerprinting information, but at the risk of prompting
                 the user if the device is not available or the user agent
                 decides not to honor the device id.</p>
@@ -405,14 +379,14 @@
     <section id="privacy-obtaining-consent">
       <h3>Obtaining Consent</h3>
       <p>The user agent may explicitly obtain user consent to play audio out of
-      non-default output devices using <code>selectAudioOutput</code>.</p>
+      non-default output devices using {{MediaDevices/selectAudioOutput}}.</p>
       <!-- FIXME: Introduce necessary hooks in mediacapture-main spec to expose
       audio output devices attached to the same device as microphone being used to capture. -->
       <p>Implementations MUST also support implicit consent via the
       <dfn data-cite="!GETUSERMEDIA#dom-mediadevices-getusermedia">
       <code>getUserMedia()</code></dfn> permission prompt; when an audio input
-      device is permitted and opened via <a><code>
-      getUserMedia()</code></a>, this also permits access to any associated
+      device is permitted and opened via <a>
+      getUserMedia()</a>, this also permits access to any associated
       audio output devices (i.e., those with the same <dfn data-cite=
       "GETUSERMEDIA#dom-mediadeviceinfo-groupid"><code>
       groupId</code></dfn>). This conveniently handles the common case of wanting
@@ -422,25 +396,19 @@
     <section>
       <h3 id=permissions-policy-integration>Permissions Policy Integration</h3>
       <p>This specification defines one
-      <a href="https://www.w3.org/TR/feature-policy-1/#policy-controlled-feature">
-      policy-controlled feature</a> identified by the string
+      [=policy-controlled feature=] identified by the string
       <code><dfn>"speaker-selection"</dfn></code>.
       It has a
-      <a href="https://www.w3.org/TR/feature-policy-1/#default-allowlist">
-      default allowlist</a> of <code class=featurepolicy>"self"</code>.
+      [=default allowlist=] of <code class=featurepolicy>"self"</code>.
       <div class="note">
-        <p>A <a data-cite="DOM#concept-document">document</a>'s
-        <dfn data-cite="HTML#concept-document-permissions-policy">permissions policy</dfn>
+        <p>A [=document=]'s [=Document/permissions policy=]
         determines whether any content in that document is
-        <a data-cite="!HTML/iframe-embed-object.html#allowed-to-use">
-        allowed to use</a> <code>selectAudioOutput</code> to prompt the user for
+        [=allowed to use=] {{MediaDevices/selectAudioOutput}} to prompt the user for
         an audio output device, or
-        <a data-cite="!HTML/iframe-embed-object.html#allowed-to-use">
-        allowed to use</a> <code>setSinkId</code> to change the device
+        [=allowed to use=] {{HTMLMediaElement/setSinkId}} to change the device
         through which audio output should be rendered, to a non-system-default
-        user-permitted device. For <code>selectAudioOutput</code> this is
-        enforced by the <a data-cite="PERMISSIONS#prompt-the-user-to-choose">
-        prompt the user to choose</a> algorithm.
+        user-permitted device. For {{MediaDevices/selectAudioOutput}} this is
+        enforced by the [=prompt the user to choose=] algorithm.
         </p>
       </div>
     </section>
