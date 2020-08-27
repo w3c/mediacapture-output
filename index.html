@@ -58,7 +58,8 @@
         <dl data-link-for="HTMLMediaElement" data-dfn-for="HTMLMediaElement"
         class="attributes">
           <dt><dfn><code>sinkId</code></dfn> of type <span class=
-          "idlAttrType"><a>DOMString</a></span>, readonly</dt>
+          "idlAttrType"><a data-cite="WEBIDL#idl-DOMString">DOMString</a></span>,
+          readonly</dt>
           <dd>
             <p>This attribute contains the ID of the audio device through which
             output is being delivered, or the empty string if output is
@@ -129,9 +130,9 @@
                     match any audio output device identified by the result that
                     would be provided by <a><code>enumerateDevices()</code></a>,
                     reject <var>p</var> with a new
-                    <a href="https://heycam.github.io/webidl/#idl-DOMException">
+                    <a data-cite="WEBIDL#idl-DOMException">
                     <code>DOMException</code></a> whose name is
-                    <a href="https://heycam.github.io/webidl/#notfounderror">
+                    <a data-cite="WEBIDL#notfounderror">
                     <code>NotFoundError</code></a> and abort these substeps.</p>
                   </li>
                   <li>
@@ -139,8 +140,9 @@
                     application would not be permitted to play audio through
                     the device identified by <var>sinkId</var> if it weren't the
                     current user agent default device, reject <var>p</var>
-                    with a new <a><code>DOMException</code></a> whose name is
-                    <a href="https://heycam.github.io/webidl/#notallowederror">
+                    with a new <a data-cite="WEBIDL#idl-DOMException">
+                    <code>DOMException</code></a> whose name is
+                    <a data-cite="WEBIDL#notallowederror">
                     <code>NotAllowedError</code></a> and abort these substeps.</p>
                   </li>
                   <li>
@@ -273,9 +275,12 @@
               <li><p>If the method call is not <a
               href="https://html.spec.whatwg.org/multipage/interaction.html#triggered-by-user-activation">
               triggered by user activation</a>,
-              return a promise rejected with a <code>DOMException</code> object whose
-              <code>name</code> attribute has the value <code>InvalidStateError</code>.
-              </p></li>
+              return a promise rejected with a
+              <a data-cite="WEBIDL#idl-DOMException">
+              <code>DOMException</code></a> object whose
+              <code>name</code> attribute has the value
+              <a data-cite="WEBIDL#invalidstateerror">
+              <code>InvalidStateError</code></a>.</p></li>
               <li><p>Let <var>options</var> be the method's first argument.</p></li>
               <li><p>Let <var>deviceId</var> be <var>options</var><code>.deviceId</code>.</p></li>
               <li><p>Let <var>p</var> be a new promise.</p></li>
@@ -291,16 +296,21 @@
                       >permission state</a> is
                     <a data-cite="PERMISSIONS/#dom-permissionstate-granted"
                       ><code>"denied"</code></a>, reject
-                      <var>p</var> with a new <code>DOMException</code> whose
+                      <var>p</var> with a new
+                      <a data-cite="WEBIDL#idl-DOMException">
+                      <code>DOMException</code></a> whose
                       <code>name</code> attribute has the value
-                    <code>NotAllowedError</code>, and abort these steps.</p>
+                    <a data-cite="WEBIDL#notallowederror">
+                    <code>NotAllowedError</code></a>, and abort these steps.</p>
                   </li>
                   <li><p>Probe the User Agent for available audio output devices.</p></li>
                   <li>
                     <p>If there is no audio output device, reject <var>p</var>
-                    with a new <code>DOMException</code> whose <code>name</code>
-                    attribute has the value <code>NotFoundError</code> and abort
-                    these steps.</p>
+                    with a new
+                    <a data-cite="WEBIDL#idl-DOMException">
+                    <code>DOMException</code></a> whose <code>name</code>
+                    attribute has the value <a data-cite="WEBIDL#notfounderror">
+                    <code>NotFoundError</code></a> and abort these steps.</p>
                   </li>
                   <li>
                     <p class="fingerprint">If <var>deviceId</var> is not
@@ -324,8 +334,12 @@
                   Prompt the user to choose</a> an audio output device, with
                   <var>descriptor</var>.</p></li>
                   <li><p>If the result of the request is <code>"denied"</code>, reject
-                    <var>p</var> with a new <code>DOMException</code> whose <code>name</code> attribute
-                    has the value <code>NotAllowedError</code> and abort these steps.</p></li>
+                    <var>p</var> with a new
+                    <a data-cite="WEBIDL#idl-DOMException">
+                    <code>DOMException</code></a> whose <code>name</code> attribute
+                    has the value <a data-cite="WEBIDL#notallowederror">
+                    <code>NotAllowedError</code></a> and abort these steps.</p>
+                  </li>
                   <li><p>Let <var>deviceInfo</var> be a new <code>MediaDeviceInfo</code> object to represent the selected audio output device.</p></li>
                   <li><p>Resolve <var>p</var> with <var>deviceInfo</var>.</p></li>
                 </ol>
@@ -357,7 +371,8 @@
             <dl data-link-for="AudioOutputOptions" data-dfn-for="AudioOutputOptions"
             class="dictionary-members">
               <dt><dfn data-idl>deviceId</dfn> of type <span class=
-                "idlMemberType">DOMString</span>, defaulting to
+              "idlMemberType"><a data-cite="WEBIDL#idl-DOMString">DOMString</a>
+              </span>, defaulting to
               <code>""</code></dt>
               <dd>
                 <p class="fingerprint">When the value of this dictionary member
