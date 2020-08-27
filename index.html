@@ -302,13 +302,12 @@
                     <var>p</var> with a new {{DOMException}} whose {{DOMException/name}} attribute
                     has the value {{NotAllowedError}} and abort these steps.</p></li>
                   <li><p>Let <var>deviceInfo</var> be a new {{MediaDeviceInfo}} object to represent the selected audio output device.</p></li>
+                  <li><p>Add <var>deviceInfo</var> to <a>[[\explicitelyGrantedAudioOutputDevices]]</a>.</p></li>
                   <li><p>Resolve <var>p</var> with <var>deviceInfo</var>.</p></li>
                 </ol>
               </li>
               <li><p>Return <var>p</var>.</p></li>
             </ol>
-            <!-- FIXME: Introduce necessary hooks to expose a device in mediacapture main spec
-            and use it as a specific step in above algorithm. -->
             <p>Once a device is exposed after a call to {{MediaDevices/selectAudioOutput}}, it MUST be listed by
             <code>enumerateDevices</code> for the current browsing context.</p>
             <p>If the promise returned by {{MediaDevices/selectAudioOutput}} is resolved,
@@ -380,8 +379,6 @@
       <h3>Obtaining Consent</h3>
       <p>The user agent may explicitly obtain user consent to play audio out of
       non-default output devices using {{MediaDevices/selectAudioOutput}}.</p>
-      <!-- FIXME: Introduce necessary hooks in mediacapture-main spec to expose
-      audio output devices attached to the same device as microphone being used to capture. -->
       <p>Implementations MUST also support implicit consent via the
       <dfn data-cite="!GETUSERMEDIA#dom-mediadevices-getusermedia">
       <code>getUserMedia()</code></dfn> permission prompt; when an audio input
@@ -392,6 +389,46 @@
       groupId</code></dfn>). This conveniently handles the common case of wanting
       to route both input and output audio through a headset or speakerphone
       device.</p>
+      <p>On page load, run the following step:</p>
+      <ol>
+        <li>
+          <p>On the <a data-cite=
+          "!HTML/#concept-relevant-global">relevant global
+          object</a>, create an internal slot: <dfn>[[\explicitelyGrantedAudioOutputDevices]]</dfn>,
+              used to store devices that the user grants explicitely through <code>selectAudioOutput</code>,
+              initialized to an empty set.</p>
+        </li>
+      </ol>
+      <p>This specification specifies the <dfn data-cite="!GETUSERMEDIA#device-exposure-decision-non-camera-microphone">
+        exposure decision algorithm for devices other than camera and microphone</dfn>.
+        The algorithm runs as follows, with <var>device</var> as input:
+        <ol>
+          <li>
+            <p>Let <var>document</var> be the
+            <a data-cite="!HTML/webappapis.html#current-settings-object">
+            current settings object</a>'s
+            <a data-cite="!HTML/webappapis.html#responsible-document">
+            responsible document</a>.</p>
+          </li>
+          <li>
+            <p>If <var>document</var> is not <a data-cite="!HTML/iframe-embed-object.html#allowed-to-use">
+            allowed to use</a> the feature identified by <a data-dfn-link-for="">"speaker-selection"</a>,
+            return <code>false</code>.</p>
+          </li>
+          <li>
+            <p>If <var>device</var> is in <a>[[\explicitelyGrantedAudioOutputDevices]]</a>, return <code>true</code>.</p>
+          </li>
+          <li>
+            <p>If <var>device</var> <a data-cite="!GETUSERMEDIA#def-mediadeviceinfo-groupId">groupId</a>
+            is the same as the <a data-cite="!GETUSERMEDIA#def-mediadeviceinfo-groupId">groupId</a>
+            of a microphone device that is exposed by <a><code>enumerateDevices()</code></a>,
+            return <code>true</code>.</p>
+          </li>
+          <li>
+            <p>return <code>false</code>.</p>
+          </li>
+        </ol>
+      </p>
     </section>
     <section>
       <h3 id=permissions-policy-integration>Permissions Policy Integration</h3>
