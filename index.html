@@ -302,7 +302,8 @@
                     <var>p</var> with a new {{DOMException}} whose {{DOMException/name}} attribute
                     has the value {{NotAllowedError}} and abort these steps.</p></li>
                   <li><p>Let <var>deviceInfo</var> be a new {{MediaDeviceInfo}} object to represent the selected audio output device.</p></li>
-                  <li><p>Add <var>deviceInfo</var> to <a>[[\explicitelyGrantedAudioOutputDevices]]</a>.</p></li>
+                  <li><p>Add <var>deviceInfo</var>.<a data-cite="!GETUSERMEDIA#def-mediadeviceinfo-deviceId">deviceId</a>
+                    to <a>[[\explicitelyGrantedAudioOutputDevices]]</a>.</p></li>
                   <li><p>Resolve <var>p</var> with <var>deviceInfo</var>.</p></li>
                 </ol>
               </li>
@@ -392,43 +393,45 @@
       <p>On page load, run the following step:</p>
       <ol>
         <li>
-          <p>On the <a data-cite=
-          "!HTML/#concept-relevant-global">relevant global
-          object</a>, create an internal slot: <dfn>[[\explicitelyGrantedAudioOutputDevices]]</dfn>,
-              used to store devices that the user grants explicitely through <code>selectAudioOutput</code>,
-              initialized to an empty set.</p>
+          <p>On the <a data-cite="!HTML/#concept-relevant-global">relevant global object</a>,
+          create an internal slot: <dfn>[[\explicitelyGrantedAudioOutputDevices]]</dfn>,
+          used to store devices that the user grants explicitely through {{MediaDevices/selectAudioOutput}},
+          initialized to an empty set.</p>
         </li>
       </ol>
       <p>This specification specifies the <dfn data-cite="!GETUSERMEDIA#device-exposure-decision-non-camera-microphone">
         exposure decision algorithm for devices other than camera and microphone</dfn>.
-        The algorithm runs as follows, with <var>device</var> as input:
-        <ol>
-          <li>
-            <p>Let <var>document</var> be the
-            <a data-cite="!HTML/webappapis.html#current-settings-object">
-            current settings object</a>'s
-            <a data-cite="!HTML/webappapis.html#responsible-document">
-            responsible document</a>.</p>
-          </li>
-          <li>
-            <p>If <var>document</var> is not <a data-cite="!HTML/iframe-embed-object.html#allowed-to-use">
-            allowed to use</a> the feature identified by <a data-dfn-link-for="">"speaker-selection"</a>,
-            return <code>false</code>.</p>
-          </li>
-          <li>
-            <p>If <var>device</var> is in <a>[[\explicitelyGrantedAudioOutputDevices]]</a>, return <code>true</code>.</p>
-          </li>
-          <li>
-            <p>If <var>device</var> <a data-cite="!GETUSERMEDIA#def-mediadeviceinfo-groupId">groupId</a>
-            is the same as the <a data-cite="!GETUSERMEDIA#def-mediadeviceinfo-groupId">groupId</a>
-            of a microphone device that is exposed by <a><code>enumerateDevices()</code></a>,
-            return <code>true</code>.</p>
-          </li>
-          <li>
-            <p>return <code>false</code>.</p>
-          </li>
-        </ol>
+        The algorithm runs as follows, with <var>device</var>, <var>microphoneList</var> and <var>cameraList</var> as input:
       </p>
+      <ol>
+        <li>
+          <p>Let <var>document</var> be the
+          <a data-cite="!HTML/webappapis.html#current-settings-object">
+          current settings object</a>'s
+          <a data-cite="!HTML/webappapis.html#responsible-document">
+          responsible document</a>.</p>
+        </li>
+        <li><p>Let <var>deviceInfo</var> be a new {{MediaDeviceInfo}} object to represent the device.</p></li>
+        <li>
+          <p>If <var>document</var> is not <a data-cite="!HTML/iframe-embed-object.html#allowed-to-use">
+          allowed to use</a> the feature identified by <a data-dfn-link-for="">"speaker-selection"</a>,
+          or <var>deviceInfo</var>.<a data-cite="!GETUSERMEDIA#def-mediadeviceinfo-kind">kind</a> is not "audiooutput",
+          return <code>false</code>.</p>
+        </li>
+        <li>
+          <p>If <var>deviceInfo</var>.<a data-cite="!GETUSERMEDIA#def-mediadeviceinfo-deviceId">deviceId</a>
+          is in <a>[[\explicitelyGrantedAudioOutputDevices]]</a>, return <code>true</code>.</p>
+        </li>
+        <li>
+          <p>If <var>deviceInfo</var>.<a data-cite="!GETUSERMEDIA#def-mediadeviceinfo-groupId">groupId</a>
+          is the same as the <a data-cite="!GETUSERMEDIA#def-mediadeviceinfo-groupId">groupId</a>
+          of any microphone in <var>microphoneList</var>,
+          return <code>true</code>.</p>
+        </li>
+        <li>
+          <p>return <code>false</code>.</p>
+        </li>
+      </ol>
     </section>
     <section>
       <h3 id=permissions-policy-integration>Permissions Policy Integration</h3>
