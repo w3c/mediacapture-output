@@ -58,11 +58,9 @@
             <p>This attribute contains the ID of the audio device through which
             output is being delivered, or the empty string if output is
             delivered through the user-agent default device. If nonempty, this
-            ID should be equal to the <dfn data-cite="!GETUSERMEDIA#dom-mediadeviceinfo-deviceid">
-            <code>deviceId</code></dfn> attribute of one of the {{MediaDeviceInfo}} values returned from 
-            <code>MediaDevices.<dfn data-cite=
-            "!GETUSERMEDIA#dom-mediadevices-enumeratedevices">enumerateDevices()</dfn></code>
-            [[!GETUSERMEDIA]].</p>
+            ID should be equal to the {{MediaDeviceInfo/deviceId}}
+            attribute of one of the {{MediaDeviceInfo}} values returned from 
+            {{MediaDevices/enumerateDevices()}}.</p>
             <p>On getting, the
             attribute MUST return the value of the <a>[[\SinkId]]</a> slot.</p>
           </dd>
@@ -118,7 +116,7 @@
                   <li>
                     <p>If <var>sinkId</var> is not the empty string and does not
                     match any audio output device identified by the result that
-                    would be provided by <a><code>enumerateDevices()</code></a>,
+                    would be provided by {{MediaDevices/enumerateDevices()}},
                     reject <var>p</var> with a new
                     {{DOMException}} whose name is
                     {{NotFoundError}} and abort these substeps.</p>
@@ -184,11 +182,11 @@
         <p><em>The following paragraph is non-normative.</em></p>
         <p class="informative">If the application wishes to react to the device
         change, the application can listen to the <dfn data-cite="GETUSERMEDIA#event-mediadevices-devicechange">
-        <code>devicechange</code></dfn> event and query <a>
-        <code>enumerateDevices()</code></a> for the list of updated devices. If
+        <code>devicechange</code></dfn> event and query
+        {{MediaDevices/enumerateDevices()}} for the list of updated devices. If
         the value of the media element's {{HTMLMediaElement/sinkId}} attribute is no longer
-        present as the <a>
-        <code>deviceId</code></a> attribute in the returned list of {{MediaDeviceInfo}}s, the device is no longer available and the
+        present as the {{MediaDeviceInfo/deviceId}}
+        attribute in the returned list of {{MediaDeviceInfo}}s, the device is no longer available and the
         application can choose to react accordingly.</p>
       </section>
       <section id="algorithms-new-sink-available">
@@ -220,17 +218,16 @@
         <p><em>The following paragraph is non-normative.</em></p>
         <p class="informative">If the application wishes to react to the device
         change, the application can listen to the <a>
-        <code>devicechange</code></a> event and query <a>
-        <code>enumerateDevices()</code></a> for the list of updated
+        <code>devicechange</code></a> event and query
+        {{MediaDevices/enumerateDevices()}} for the list of updated
         devices.</p>
       </section>
     </section>
   </section>
   <section id="mediadevices-extensions">
-    <h2><a><code>MediaDevices</code></a> Extensions</h2>
-    <p>This section specifies additions to the <dfn
-    data-cite="!GETUSERMEDIA#dom-mediadevices"><code>
-    MediaDevices</code></dfn> when the Audio Output Devices API is
+    <h2>{{MediaDevices}} Extensions</h2>
+    <p>This section specifies additions to the {{MediaDevices}}
+    when the Audio Output Devices API is
     supported.</p>
     <div>
       <pre class="idl">
@@ -302,7 +299,7 @@
                     <var>p</var> with a new {{DOMException}} whose {{DOMException/name}} attribute
                     has the value {{NotAllowedError}} and abort these steps.</p></li>
                   <li><p>Let <var>deviceInfo</var> be a new {{MediaDeviceInfo}} object to represent the selected audio output device.</p></li>
-                  <li><p>Add <var>deviceInfo</var>.<a data-cite="!GETUSERMEDIA#def-mediadeviceinfo-deviceId">deviceId</a>
+                  <li><p>Add <var>deviceInfo</var>.{{MediaDeviceInfo/deviceId}}
                     to <a>[[\explicitelyGrantedAudioOutputDevices]]</a>.</p></li>
                   <li><p>Resolve <var>p</var> with <var>deviceInfo</var>.</p></li>
                 </ol>
@@ -310,7 +307,7 @@
               <li><p>Return <var>p</var>.</p></li>
             </ol>
             <p>Once a device is exposed after a call to {{MediaDevices/selectAudioOutput}}, it MUST be listed by
-            <code>enumerateDevices</code> for the current browsing context.</p>
+            {{MediaDevices/enumerateDevices()}} for the current browsing context.</p>
             <p>If the promise returned by {{MediaDevices/selectAudioOutput}} is resolved,
             user activation is enabled when executing the promise fulfillment handlers.
             This allows starting to play audio or calling {{HTMLMediaElement/setSinkId}} synchronously
@@ -381,13 +378,11 @@
       <p>The user agent may explicitly obtain user consent to play audio out of
       non-default output devices using {{MediaDevices/selectAudioOutput}}.</p>
       <p>Implementations MUST also support implicit consent via the
-      <dfn data-cite="!GETUSERMEDIA#dom-mediadevices-getusermedia">
-      <code>getUserMedia()</code></dfn> permission prompt; when an audio input
-      device is permitted and opened via <a>
-      getUserMedia()</a>, this also permits access to any associated
-      audio output devices (i.e., those with the same <dfn data-cite=
-      "GETUSERMEDIA#dom-mediadeviceinfo-groupid"><code>
-      groupId</code></dfn>). This conveniently handles the common case of wanting
+      {{MediaDevices/getUserMedia()}} permission prompt; when an audio input
+      device is permitted and opened via {{MediaDevices/getUserMedia()}}
+      , this also permits access to any associated
+      audio output devices (i.e., those with the same {{MediaDeviceInfo/groupId}}).
+      This conveniently handles the common case of wanting
       to route both input and output audio through a headset or speakerphone
       device.</p>
       <p>On page load, run the following step:</p>
@@ -414,16 +409,16 @@
         <li><p>Let <var>deviceInfo</var> be a new {{MediaDeviceInfo}} object to represent the device.</p></li>
         <li>
           <p>If <var>document</var> is not <a data-cite="!HTML/iframe-embed-object.html#allowed-to-use">
-          allowed to use</a> the feature identified by <a data-dfn-link-for="">"speaker-selection"</a>,
-          or <var>deviceInfo</var>.<a data-cite="!GETUSERMEDIA#def-mediadeviceinfo-kind">kind</a> is not "audiooutput",
+          allowed to use</a> the feature identified by <a>"speaker-selection"</a>,
+          or <var>deviceInfo</var>.{{MediaDeviceInfo/kind}} is not {{ MediaDeviceKind/"audiooutput" }},
           return <code>false</code>.</p>
         </li>
         <li>
-          <p>If <var>deviceInfo</var>.<a data-cite="!GETUSERMEDIA#def-mediadeviceinfo-deviceId">deviceId</a>
+          <p>If <var>deviceInfo</var>.{{MediaDeviceInfo/deviceId}}
           is in <a>[[\explicitelyGrantedAudioOutputDevices]]</a>, return <code>true</code>.</p>
         </li>
         <li>
-          <p>If <var>deviceInfo</var>.<a data-cite="!GETUSERMEDIA#def-mediadeviceinfo-groupId">groupId</a>
+          <p>If <var>deviceInfo</var>.{{MediaDeviceInfo/groupId}}
           is the same as the <a data-cite="!GETUSERMEDIA#def-mediadeviceinfo-groupId">groupId</a>
           of any microphone in <var>microphoneList</var>,
           return <code>true</code>.</p>
