@@ -299,13 +299,6 @@
                   <li><p>Let <var>deviceInfo</var> be a new {{MediaDeviceInfo}} object to represent the selected audio output device.</p></li>
                   <li><p>Add <var>deviceInfo</var>.{{MediaDeviceInfo/deviceId}}
                     to <a>[[\explicitelyGrantedAudioOutputDevices]]</a>.</p></li>
-                  <li><p>Perform the
-                    <a data-cite="!HTML/#activation-notification">activation notification</a> steps of the
-                    [=relevant global object=]'s [=browsing context=].</p></li>
-                  <div class="note">
-                    <p>This allows starting to play audio or calling {{HTMLMediaElement/setSinkId}} on fulfillment without
-                    additional user interaction.</p>
-                  </div>
                   <li><p>Resolve <var>p</var> with <var>deviceInfo</var>.</p></li>
                 </ol>
               </li>
@@ -313,6 +306,16 @@
             </ol>
             <p>Once a device is exposed after a call to {{MediaDevices/selectAudioOutput}}, it MUST be listed by
             {{MediaDevices/enumerateDevices()}} for the current browsing context.</p>
+            <p>If the promise returned by {{MediaDevices/selectAudioOutput}} is resolved,
+            then the user agent MUST ensure the document is both immediately
+            <a data-cite="!HTML/#allowed-to-play">allowed to play</a> media in an
+            {{HTMLMediaElement}}, and immediately
+            <a data-cite="!WEBAUDIO/#allowed-to-start">allowed to start</a> an
+            {{AudioContext}}, without needing any additional user gesture.</p>
+            <div class="note">
+              <p>This is imprecise due to the current lack of standardization of
+              autoplay in browsers.</p>
+            </div>
           </dd>
         </dl>
       </section>
