@@ -246,12 +246,10 @@
             <p>When the {{selectAudioOutput}} method is called,
             the User Agent MUST run the following steps:</p>
             <ol>
-              <li><p>If the method call is not <a class=FIXME
-              href="https://html.spec.whatwg.org/multipage/interaction.html#triggered-by-user-activation">
-              triggered by user activation</a>,
-              return a promise rejected with a {{DOMException}} object whose
-              {{DOMException/name}} attribute has the value {{InvalidStateError}}.
-              </p></li>
+              <li><p>If the [=relevant global object=] of [=this=] does not have
+                [=transient activation=], return a promise <a>rejected</a> with
+                a {{DOMException}} object whose {{DOMException/name}} attribute
+                has the value {{InvalidStateError}}.</p></li>
               <li><p>Let <var>options</var> be the method's first argument.</p></li>
               <li><p>Let <var>deviceId</var> be <var>options</var><code>.deviceId</code>.</p></li>
               <li><p>Let <var>p</var> be a new promise.</p></li>
@@ -309,9 +307,15 @@
             <p>Once a device is exposed after a call to {{MediaDevices/selectAudioOutput}}, it MUST be listed by
             {{MediaDevices/enumerateDevices()}} for the current browsing context.</p>
             <p>If the promise returned by {{MediaDevices/selectAudioOutput}} is resolved,
-            user activation is enabled when executing the promise fulfillment handlers.
-            This allows starting to play audio or calling {{HTMLMediaElement/setSinkId}} synchronously
-            within these fulfillment handlers without any additional user gesture needed.</p>
+            then the user agent MUST ensure the document is both immediately
+            <a data-cite="!HTML/#allowed-to-play">allowed to play</a> media in an
+            {{HTMLMediaElement}}, and immediately
+            <a data-cite="!WEBAUDIO/#allowed-to-start">allowed to start</a> an
+            {{AudioContext}}, without needing any additional user gesture.</p>
+            <div class="note">
+              <p>This is imprecise due to the current lack of standardization of
+              autoplay in browsers.</p>
+            </div>
           </dd>
         </dl>
       </section>
