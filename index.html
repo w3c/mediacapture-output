@@ -298,7 +298,7 @@
                     has the value {{NotAllowedError}} and abort these steps.</p></li>
                   <li><p>Let <var>deviceInfo</var> be a new {{MediaDeviceInfo}} object to represent the selected audio output device.</p></li>
                   <li><p>Add <var>deviceInfo</var>.{{MediaDeviceInfo/deviceId}}
-                    to <a data-link-for="relevant global object">[[\explicitelyGrantedAudioOutputDevices]]</a>.</p></li>
+                    to <a data-link-for="relevant global object">[[\explicitlyGrantedAudioOutputDevices]]</a>.</p></li>
                   <li><p>Resolve <var>p</var> with <var>deviceInfo</var>.</p></li>
                 </ol>
               </li>
@@ -393,8 +393,8 @@
       <ol>
         <li>
           <p>On the <a data-cite="!HTML/#concept-relevant-global">relevant global object</a>,
-          create an internal slot: <dfn data-dfn-for="relevant global object">[[\explicitelyGrantedAudioOutputDevices]]</dfn>,
-          used to store devices that the user grants explicitely through {{MediaDevices/selectAudioOutput}},
+          create an internal slot: <dfn data-dfn-for="relevant global object">[[\explicitlyGrantedAudioOutputDevices]]</dfn>,
+          used to store devices that the user grants explicitly through {{MediaDevices/selectAudioOutput}},
           initialized to an empty set.</p>
         </li>
       </ol>
@@ -419,7 +419,7 @@
         </li>
         <li>
           <p>If <var>deviceInfo</var>.{{MediaDeviceInfo/deviceId}}
-          is in <a data-link-for="relevant global object">[[\explicitelyGrantedAudioOutputDevices]]</a>, return <code>true</code>.</p>
+          is in <a data-link-for="relevant global object">[[\explicitlyGrantedAudioOutputDevices]]</a>, return <code>true</code>.</p>
         </li>
         <li>
           <p>If <var>deviceInfo</var>.{{MediaDeviceInfo/groupId}}
