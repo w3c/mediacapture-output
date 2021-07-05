@@ -54,7 +54,7 @@ var respecConfig = {
    // name (without the @w3.org) of the public mailing to which comments are due
    wgPublicList: "public-webrtc",
    github: "https://github.com/w3c/mediacapture-output/",
-  xref: ["webidl", "html", "permissions", "mediacapture-streams", "permissions-policy","dom"],
+  xref: ["webidl", "html", "permissions", "mediacapture-streams", "permissions-policy","dom", "webaudio"],
      implementationReportURI: "https://wpt.fyi/audio-output",
    otherLinks: [
     {
