@@ -38,7 +38,7 @@
     agent MUST add the following initializing step:</p>
     <ol>
       <li>
-        <p>Let the element have a <dfn>[[\SinkId]]</dfn> internal slot,
+        <p>Let the element have a <dfn data-dfn-for="HTMLMediaElement">[[\SinkId]]</dfn> internal slot,
         initialized to <code>""</code>.
       </li>
     </ol>
@@ -62,7 +62,7 @@
             attribute of one of the {{MediaDeviceInfo}} values returned from 
             {{MediaDevices/enumerateDevices()}}.</p>
             <p>On getting, the
-            attribute MUST return the value of the <a>[[\SinkId]]</a> slot.</p>
+            attribute MUST return the value of the {{HTMLMediaElement/[[SinkId]]}} slot.</p>
           </dd>
         </dl>
       </section>
@@ -104,7 +104,7 @@
               </li>
               <li>
                 <p>If <var>sinkId</var> is equal to <var>element</var>'s
-                <a>[[\SinkId]]</a>,
+                {{HTMLMediaElement/[[SinkId]]}},
                 return a promise resolved with <code>undefined</code>.</p>
               </li>
               <li>
@@ -147,7 +147,7 @@
                     <p>Queue a task that runs the following steps:</p>
                     <ol>
                       <li>
-                        <p>Set <var>element</var>'s <a>[[\SinkId]]</a> to
+                        <p>Set <var>element</var>'s {{HTMLMediaElement/[[SinkId]]}} to
                         <var>sinkId</var>.</p>
                       </li>
                       <li>
@@ -298,7 +298,7 @@
                     has the value {{NotAllowedError}} and abort these steps.</p></li>
                   <li><p>Let <var>deviceInfo</var> be a new {{MediaDeviceInfo}} object to represent the selected audio output device.</p></li>
                   <li><p>Add <var>deviceInfo</var>.{{MediaDeviceInfo/deviceId}}
-                    to <a>[[\explicitelyGrantedAudioOutputDevices]]</a>.</p></li>
+                    to <a data-link-for="relevant global object">[[\explicitlyGrantedAudioOutputDevices]]</a>.</p></li>
                   <li><p>Resolve <var>p</var> with <var>deviceInfo</var>.</p></li>
                 </ol>
               </li>
@@ -393,8 +393,8 @@
       <ol>
         <li>
           <p>On the <a data-cite="!HTML/#concept-relevant-global">relevant global object</a>,
-          create an internal slot: <dfn>[[\explicitelyGrantedAudioOutputDevices]]</dfn>,
-          used to store devices that the user grants explicitely through {{MediaDevices/selectAudioOutput}},
+          create an internal slot: <dfn data-dfn-for="relevant global object">[[\explicitlyGrantedAudioOutputDevices]]</dfn>,
+          used to store devices that the user grants explicitly through {{MediaDevices/selectAudioOutput}},
           initialized to an empty set.</p>
         </li>
       </ol>
@@ -419,7 +419,7 @@
         </li>
         <li>
           <p>If <var>deviceInfo</var>.{{MediaDeviceInfo/deviceId}}
-          is in <a>[[\explicitelyGrantedAudioOutputDevices]]</a>, return <code>true</code>.</p>
+          is in <a data-link-for="relevant global object">[[\explicitlyGrantedAudioOutputDevices]]</a>, return <code>true</code>.</p>
         </li>
         <li>
           <p>If <var>deviceInfo</var>.{{MediaDeviceInfo/groupId}}
