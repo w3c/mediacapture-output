@@ -451,7 +451,9 @@
             semantic is that it queries for access to all devices of that class. Thus, if a query
             for the "speaker-selection" [=powerful feature=] with no
             {{DevicePermissionDescriptor/deviceId}} returns {{PermissionState/"granted"}}, the
-            client knows that there will never be a permission prompt for an audio output device,
+            client knows that there will not be a permission prompt for any audio output device
+            known to it, if requested using the {{AudioOutputOptions/deviceId}} option to
+            {{selectAudioOutput}},
             and if {{PermissionState/"denied"}} is returned, it knows that no selectAudioOutput request
             for an audio output device will succeed.
           </p>
