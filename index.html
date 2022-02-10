@@ -59,7 +59,7 @@
             output is being delivered, or the empty string if output is
             delivered through the user-agent default device. If nonempty, this
             ID should be equal to the {{MediaDeviceInfo/deviceId}}
-            attribute of one of the {{MediaDeviceInfo}} values returned from 
+            attribute of one of the {{MediaDeviceInfo}} values returned from
             {{MediaDevices/enumerateDevices()}}.</p>
             <p>On getting, the
             attribute MUST return the value of the {{HTMLMediaElement/[[SinkId]]}} slot.</p>
@@ -256,8 +256,8 @@
               <li>
                 <p>Run the following steps in parallel:</p>
                 <ol>
-                  <li><p>Let <var>descriptor</var> be a {{PermissionDescriptor}} named
-                    {{PermissionName/"speaker-selection"}}.</p>
+                  <li><p>Let <var>descriptor</var> be a {{PermissionDescriptor}} with its
+                    [=powerful feature/name=] set to "speaker-selection"</p>
                   </li>
                   <li>
                     <p>If <var>descriptor</var>'s [=permission state=] is
@@ -431,6 +431,70 @@
           <p>return <code>false</code>.</p>
         </li>
       </ol>
+    </section>
+    <section>
+      <h3 id=permissions-integration>Permissions Integration</h3>
+      <p>The Audio Output Devices API is a [=powerful feature=] that is
+      identified by the [=powerful feature/name=] "speaker-selection".</p>
+      <p>It defines the following types and algorithms:</p>
+      <dl>
+        <dt>
+          [=powerful feature/permission descriptor type=]
+        </dt>
+        <dd>
+          <p>
+            A permission covers access to the device given in the associated
+            {{DevicePermissionDescriptor}} descriptor.
+          </p>
+          <p>
+            If the descriptor does not have a {{DevicePermissionDescriptor/deviceId}}, its
+            semantic is that it queries for access to all devices of that class. Thus, if a query
+            for the "speaker-selection" [=powerful feature=] with no
+            {{DevicePermissionDescriptor/deviceId}} returns {{PermissionState/"granted"}}, the
+            client knows that there will never be a permission prompt for an audio output device,
+            and if {{PermissionState/"denied"}} is returned, it knows that no selectAudioOutput request
+            for an audio output device will succeed.
+          </p>
+          <p>
+            If a permission state is present for access to some, but not all, audio output devices,
+            a query without the {{DevicePermissionDescriptor/deviceId}} will return
+            {{PermissionState/"prompt"}}.
+          </p>
+        </dd>
+        <dt>
+          [=powerful feature/extra permission data type=]
+        </dt>
+        <dd>
+          A list of {{MediaDeviceInfo/deviceId}} values for the devices the user has made a
+          non-default decision on access to.
+        </dd>
+        <dt>
+          [=powerful feature/permission query algorithm=]
+        </dt>
+        <dd>
+          The permission query algorithm runs the following steps:
+          <ol class="algorithm">
+            <li>If |permissionDesc|.deviceId exists in the [=powerful feature/extra permission
+            data=], set <code>|status|.state</code> to |permissionDesc|'s <a>permission state</a>
+            and terminate these steps.
+            </li>
+            <li>Let <var>global</var> be a copy of |permissionDesc| with the
+            {{DevicePermissionDescriptor/deviceId}} member removed.
+            </li>
+            <li>Set <code>|status|.state</code> to <var>global</var>'s <a>permission state</a>.
+            </li>
+          </ol>
+        </dd>
+        <dt>
+          [=powerful feature/permission revocation algorithm=]
+        </dt>
+        <dd>
+          This is the result of calling the [=device permission revocation algorithm=] passing
+          {{PermissionDescriptor/name}} and {{DevicePermissionDescriptor/deviceId}} as arguments.
+          If the descriptor does not have a {{DevicePermissionDescriptor/deviceId}}, then
+          <code>undefined</code> is passed in place of {{DevicePermissionDescriptor/deviceId}}.
+        </dd>
+      </dl>
     </section>
     <section>
       <h3 id=permissions-policy-integration>Permissions Policy Integration</h3>
