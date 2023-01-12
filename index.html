@@ -244,7 +244,7 @@
           <dd>
             <p>Prompts the user to select a specific audio output device.</p>
             <p>When the {{selectAudioOutput}} method is called,
-            the User Agent MUST run the following steps:</p>
+            the [=user agent=] MUST run the following steps:</p>
             <ol>
               <li><p>If the [=relevant global object=] of [=this=] does not have
                 [=transient activation=], return a promise <a>rejected</a> with
@@ -266,7 +266,7 @@
                       {{DOMException/name}} attribute has the value
                     {{NotAllowedError}}, and abort these steps.</p>
                   </li>
-                  <li><p>Probe the User Agent for available audio output devices.</p></li>
+                  <li><p>Probe the [=user agent=] for available audio output devices.</p></li>
                   <li>
                     <p>If there is no audio output device, reject <var>p</var>
                     with a new {{DOMException}} whose {{DOMException/name}}
