@@ -1,3 +1,6 @@
+let aMonthFromNow = new Date();
+aMonthFromNow.setMonth(aMonthFromNow.getMonth() + 1);
+
 var respecConfig = {
    // specification status (e.g. WD, LCWD, NOTE, etc.). If in doubt use ED.
    specStatus:           "ED",
