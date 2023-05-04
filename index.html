@@ -298,7 +298,12 @@
                   <li><p>If the result of the request is {{PermissionState/"denied"}}, reject
                     <var>p</var> with a new {{DOMException}} whose {{DOMException/name}} attribute
                     has the value {{NotAllowedError}} and abort these steps.</p></li>
-                  <li><p>Let <var>deviceInfo</var> be a new {{MediaDeviceInfo}} object to represent the selected audio output device.</p></li>
+                  <li>
+                    <p>Let <var>selectedDevice</var> be the user-selected audio output device.</p>
+                  </li>
+                  <li><p>Let <var>deviceInfo</var> be the result of
+                      [=creating a device info object=] to represent <var>selectedDevice</var>,
+                      with <var>mediaDevices</var>.</p></li>
                   <li><p>Add <var>deviceInfo</var>.{{MediaDeviceInfo/deviceId}}
                     to <a data-link-for="relevant global object">[[\explicitlyGrantedAudioOutputDevices]]</a>.</p></li>
                   <li><p>Resolve <var>p</var> with <var>deviceInfo</var>.</p></li>
@@ -414,7 +419,10 @@
           <a data-cite="!HTML/window-object.html#concept-document-window">
           associated <code>Document</code></a>.</p>
         </li>
-        <li><p>Let <var>deviceInfo</var> be a new {{MediaDeviceInfo}} object to represent the device.</p></li>
+        <li>
+          <p>Let <var>deviceInfo</var> be the result of
+          [=creating a device info object=] to represent <var>device</var>.</p>
+        </li>
         <li>
           <p>If <var>document</var> is not <a data-cite="!HTML/iframe-embed-object.html#allowed-to-use">
           allowed to use</a> the feature identified by <a>"speaker-selection"</a>,
