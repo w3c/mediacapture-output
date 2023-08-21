@@ -479,39 +479,6 @@
             a query will return {{PermissionState/"prompt"}}.
           </p>
         </dd>
-        <dt>
-          [=powerful feature/extra permission data type=]
-        </dt>
-        <dd>
-          A list of {{MediaDeviceInfo/deviceId}} values for the devices the user has made a
-          non-default decision on access to.
-        </dd>
-        <dt>
-          [=powerful feature/permission query algorithm=]
-        </dt>
-        <dd>
-          The permission query algorithm runs the following steps:
-          <ol class="algorithm">
-            <li>If |permissionDesc|.deviceId exists in the [=powerful feature/extra permission
-            data=], set <code>|status|.state</code> to |permissionDesc|'s <a>permission state</a>
-            and terminate these steps.
-            </li>
-            <li>Let <var>global</var> be a copy of |permissionDesc| with the
-            {{DevicePermissionDescriptor/deviceId}} member removed.
-            </li>
-            <li>Set <code>|status|.state</code> to <var>global</var>'s <a>permission state</a>.
-            </li>
-          </ol>
-        </dd>
-        <dt>
-          [=powerful feature/permission revocation algorithm=]
-        </dt>
-        <dd>
-          This is the result of calling the [=device permission revocation algorithm=] passing
-          {{PermissionDescriptor/name}} and {{DevicePermissionDescriptor/deviceId}} as arguments.
-          If the descriptor does not have a {{DevicePermissionDescriptor/deviceId}}, then
-          <code>undefined</code> is passed in place of {{DevicePermissionDescriptor/deviceId}}.
-        </dd>
       </dl>
     </section>
     <section>
