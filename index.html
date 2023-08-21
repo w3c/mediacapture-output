@@ -455,24 +455,28 @@
         </dt>
         <dd>
           <p>
-            A permission covers access to the device given in the associated
-            {{DevicePermissionDescriptor}} descriptor.
+            A permission covers access to at least one non-default speaker output device.
           </p>
           <p>
-            If the descriptor does not have a {{DevicePermissionDescriptor/deviceId}}, its
-            semantic is that it queries for access to all devices of that class. Thus, if a query
-            for the "speaker-selection" [=powerful feature=] with no
-            {{DevicePermissionDescriptor/deviceId}} returns {{PermissionState/"granted"}}, the
-            client knows that there will not be a permission prompt for any audio output device
-            known to it, if requested using the {{AudioOutputOptions/deviceId}} option to
-            {{MediaDevices/selectAudioOutput}},
-            and if {{PermissionState/"denied"}} is returned, it knows that no selectAudioOutput request
+            The semantics of the descriptor is that it queries for access to any non-default speaker
+            output device. Thus, if a query for the "speaker-selection" [=powerful feature=] returns
+            {{PermissionState/"granted"}}, the client knows that at least one of the
+            {{AudioOutputOptions/deviceId}}s previously shared with it can be passed to
+            {{MediaDevices/selectAudioOutput}} without incurring a permission prompt,
+            and if {{PermissionState/"denied"}} is returned, it knows that no {{MediaDevices/selectAudioOutput}} request
             for an audio output device will succeed.
           </p>
           <p>
+            If the User Agent considers permission given to some, but not all, audio output devices,
+            a query will return {{PermissionState/"granted"}}.
+          </p>
+          <p>
+            If the User Agent considers permission denied to all audio output devices, a query
+            will return {{PermissionState/"denied"}}.
+          </p>
+          <p>
             If a permission state is present for access to some, but not all, audio output devices,
-            a query without the {{DevicePermissionDescriptor/deviceId}} will return
-            {{PermissionState/"prompt"}}.
+            a query will return {{PermissionState/"prompt"}}.
           </p>
         </dd>
         <dt>
