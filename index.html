@@ -277,8 +277,9 @@
                   </li>
                   <li>
                     <p class="fingerprint">If <var>deviceId</var> is not
-                    <code>""</code> and matches an id previously exposed by
-                    {{MediaDevices/selectAudioOutput}} in an earlier browsing
+                    <code>""</code> and matches an audio output device id previously
+                    exposed by {{MediaDevices/selectAudioOutput}} or
+                    {{MediaDevices/enumerateDevices()}} in an earlier browsing
                     session, the user agent MAY decide, based on its previous
                     decision of whether to persist this id or not for this set
                     of origins, to run the following sub steps:</p>
