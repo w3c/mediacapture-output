@@ -279,7 +279,7 @@
                     <p class="fingerprint">If <var>deviceId</var> is not
                     <code>""</code> and matches an audio output device id previously
                     exposed by {{MediaDevices/selectAudioOutput}} or
-                    {{MediaDevices/enumerateDevices()}} in an earlier browsing
+                    {{MediaDevices/getUserMedia()}} in an earlier browsing
                     session, the user agent MAY decide, based on its previous
                     decision of whether to persist this id or not for this set
                     of origins, to run the following sub steps:</p>
@@ -345,7 +345,8 @@
               <dd>
                 <p class="fingerprint">When the value of this dictionary member
                 is not <code>""</code>, and matches the id previously exposed by
-                {{MediaDevices/selectAudioOutput}} in an earlier session, the user
+                {{MediaDevices/selectAudioOutput}} or
+                {{MediaDevices/getUserMedia()}} in an earlier session, the user
                 agent MAY opt to skip prompting the user in favor of resolving
                 with this id or a new rotated id for the same device, assuming
                 that device is currently available.</p>
