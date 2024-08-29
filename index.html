@@ -276,22 +276,30 @@
                     these steps.</p>
                   </li>
                   <li>
-                    <p class="fingerprint">If <var>deviceId</var> is not
-                    <code>""</code> and matches an audio output device id previously
-                    exposed by {{MediaDevices/selectAudioOutput}} or
-                    {{MediaDevices/getUserMedia()}} in an earlier browsing
-                    session, the user agent MAY decide, based on its previous
-                    decision of whether to persist this id or not for this set
-                    of origins, to run the following sub steps:</p>
+                    <p>If <var>deviceId</var> is not <code>""</code>
+                    run the following sub steps:</p>
                     <ol>
                       <li>
-                        <p>Let <var>device</var> be the device identified by
-                        <var>deviceId</var>, if available.</p>
+                        <p class="fingerprint">If <var>deviceId</var> matches a
+                        a device id previously exposed by
+                        {{MediaDevices/selectAudioOutput}} in an earlier browsing
+                        session, or matches a device id of an audio output device
+                        with the same groupId as an audio input device previously
+                        exposed by {{MediaDevices/getUserMedia()}} in an earlier browsing
+                        session, the user agent MAY decide, based on its previous
+                        decision of whether to persist this id or not for this set
+                        of origins, to run the following sub steps:</p>
+                        <ol>
+                          <li>
+                            <p>Let <var>device</var> be the device identified by
+                            <var>deviceId</var>, if available.</p>
+                          </li>
+                          <li><p>If <var>device</var> is available, resolve
+                          <var>p</var> with either <var>deviceId</var> or a freshly
+                          rotated device id for <var>device</var>, and abort the
+                          in-parallel steps.</p></li>
+                        </ol>
                       </li>
-                      <li><p>If <var>device</var> is available, resolve
-                      <var>p</var> with either <var>deviceId</var> or a freshly
-                      rotated device id for <var>device</var>, and abort the
-                      in-parallel steps.</p></li>
                     </ol>
                   </li>
                   <li><p>[=Prompt the user to choose=] an audio output device, with
@@ -346,6 +354,8 @@
                 <p class="fingerprint">When the value of this dictionary member
                 is not <code>""</code>, and matches the id previously exposed by
                 {{MediaDevices/selectAudioOutput}} or
+                a device id of an audio output device with the same groupId as an
+                audio input device previously exposed by
                 {{MediaDevices/getUserMedia()}} in an earlier session, the user
                 agent MAY opt to skip prompting the user in favor of resolving
                 with this id or a new rotated id for the same device, assuming
