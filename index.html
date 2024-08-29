@@ -282,10 +282,10 @@
                       <li>
                         <p class="fingerprint">If <var>deviceId</var> matches a
                         a device id previously exposed by
-                        {{MediaDevices/selectAudioOutput}} in an earlier browsing
+                        {{MediaDevices/selectAudioOutput}} in this or an earlier browsing
                         session, or matches a device id of an audio output device
                         with the same groupId as an audio input device previously
-                        exposed by {{MediaDevices/getUserMedia()}} in an earlier browsing
+                        exposed by {{MediaDevices/getUserMedia()}} in this or an earlier browsing
                         session, the user agent MAY decide, based on its previous
                         decision of whether to persist this id or not for this set
                         of origins, to run the following sub steps:</p>
@@ -356,7 +356,7 @@
                 {{MediaDevices/selectAudioOutput}} or
                 a device id of an audio output device with the same groupId as an
                 audio input device previously exposed by
-                {{MediaDevices/getUserMedia()}} in an earlier session, the user
+                {{MediaDevices/getUserMedia()}} in this or an earlier session, the user
                 agent MAY opt to skip prompting the user in favor of resolving
                 with this id or a new rotated id for the same device, assuming
                 that device is currently available.</p>
