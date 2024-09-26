@@ -80,13 +80,8 @@
             steps:</p>
             <ol class="method-algorithm">
               <li>
-                <p>Let <var>document</var> be the
-                <a data-cite="!HTML/webappapis.html#current-settings-object">
-                current settings object</a>'s
-                <a data-cite="!HTML/webappapis.html#concept-relevant-global">
-                relevant global object</a>'s
-                <a data-cite="!HTML/window-object.html#concept-document-window">
-                associated <code>Document</code></a>.</p>
+                <p>Let <var>document</var> be [=this=]'s [=relevant global object=]'s
+                [=associated `Document`=].</p>
               </li>
               <li>
                 <p>If <var>document</var> is not
@@ -248,7 +243,7 @@
             <p>When the {{selectAudioOutput}} method is called,
             the [=user agent=] MUST run the following steps:</p>
             <ol>
-              <li><p>If the [=relevant global object=] of [=this=] does not have
+              <li><p>If [=this=]'s [=relevant global object=] does not have
                 [=transient activation=], return a promise <a>rejected</a> with
                 a {{DOMException}} object whose {{DOMException/name}} attribute
                 has the value {{InvalidStateError}}.</p></li>
@@ -314,7 +309,7 @@
                       [=creating a device info object=] to represent <var>selectedDevice</var>,
                       with <var>mediaDevices</var>.</p></li>
                   <li><p>Add <var>deviceInfo</var>.{{MediaDeviceInfo/deviceId}}
-                    to <a data-link-for="relevant global object">[[\explicitlyGrantedAudioOutputDevices]]</a>.</p></li>
+                    to <a data-link-for="MediaDevices">[[\explicitlyGrantedAudioOutputDevices]]</a>.</p></li>
                   <li><p>Resolve <var>p</var> with <var>deviceInfo</var>.</p></li>
                 </ol>
               </li>
@@ -408,28 +403,25 @@
       This conveniently handles the common case of wanting
       to route both input and output audio through a headset or speakerphone
       device.</p>
-      <p>On page load, run the following step:</p>
-      <ol>
+      <p> Upon [=create a MediaDevices | creation of a MediaDevices=] object
+      <var>mediaDevices</var>, initialize <var>mediaDevices</var> with an
+      additional internal slot:</p>
+      <ul data-dfn-for="MediaDevices">
         <li>
-          <p>On the <a data-cite="!HTML/#concept-relevant-global">relevant global object</a>,
-          create an internal slot: <dfn data-dfn-for="relevant global object">[[\explicitlyGrantedAudioOutputDevices]]</dfn>,
-          used to store devices that the user grants explicitly through {{MediaDevices/selectAudioOutput}},
-          initialized to an empty set.</p>
+          <p><dfn data-dfn-for="MediaDevices">[[\explicitlyGrantedAudioOutputDevices]]</dfn>,
+          to store devices that the user grants explicitly through
+          {{MediaDevices/selectAudioOutput}}, initialized to an empty [=map/set=].</p>
         </li>
-      </ol>
+      </ul>
       <p>This specification specifies the <dfn data-cite="!GETUSERMEDIA#device-exposure-decision-non-camera-microphone">
         exposure decision algorithm for devices other than camera and microphone</dfn>.
-        The algorithm runs as follows, with <var>device</var>, <var>microphoneList</var> and <var>cameraList</var> as input:
+        The algorithm runs as follows, with <var>device</var>, <var>microphoneList</var>, <var>cameraList</var> and
+        <var>mediaDevices</var> as input:
       </p>
       <ol>
         <li>
-          <p>Let <var>document</var> be the
-          <a data-cite="!HTML/webappapis.html#current-settings-object">
-          current settings object</a>'s
-          <a data-cite="!HTML/webappapis.html#concept-relevant-global">
-          relevant global object</a>'s
-          <a data-cite="!HTML/window-object.html#concept-document-window">
-          associated <code>Document</code></a>.</p>
+          <p>Let <var>document</var> be <var>mediaDevices</var>'s
+          [=relevant global object=]'s [=associated `Document`=].</p>
         </li>
         <li>
           <p>Let <var>deviceInfo</var> be the result of
@@ -443,7 +435,7 @@
         </li>
         <li>
           <p>If <var>deviceInfo</var>.{{MediaDeviceInfo/deviceId}}
-          is in <a data-link-for="relevant global object">[[\explicitlyGrantedAudioOutputDevices]]</a>, return <code>true</code>.</p>
+          is in <a data-link-for="MediaDevices">[[\explicitlyGrantedAudioOutputDevices]]</a>, return <code>true</code>.</p>
         </li>
         <li>
           <p>If <var>deviceInfo</var>.{{MediaDeviceInfo/groupId}}
