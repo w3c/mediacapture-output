@@ -254,6 +254,7 @@
                 has the value {{InvalidStateError}}.</p></li>
               <li><p>Let <var>options</var> be the method's first argument.</p></li>
               <li><p>Let <var>deviceId</var> be <var>options</var><code>.deviceId</code>.</p></li>
+              <li><p>Let <var>mediaDevices</var> be [=this=].</p></li>
               <li><p>Let <var>p</var> be a new promise.</p></li>
               <li>
                 <p>Run the following steps in parallel:</p>
@@ -432,8 +433,18 @@
           associated <code>Document</code></a>.</p>
         </li>
         <li>
+          <p>Let <var>mediaDevices</var> be the
+          <a data-cite="!HTML/webappapis.html#current-settings-object">
+          current settings object</a>'s
+          <a data-cite="!HTML/webappapis.html#concept-relevant-global">
+          relevant global object</a>'s
+          <dfn data-cite="GETUSERMEDIA#dfn-associated-mediadevices">
+          associated <code>MediaDevices</code></dfn>.</p>
+        </li>
+        <li>
           <p>Let <var>deviceInfo</var> be the result of
-          [=creating a device info object=] to represent <var>device</var>.</p>
+          [=creating a device info object=] to represent <var>device</var>,
+          with <var>mediaDevices</var>.</p>
         </li>
         <li>
           <p>If <var>document</var> is not <a data-cite="!HTML/iframe-embed-object.html#allowed-to-use">
@@ -446,9 +457,7 @@
           is in <a data-link-for="relevant global object">[[\explicitlyGrantedAudioOutputDevices]]</a>, return <code>true</code>.</p>
         </li>
         <li>
-          <p>If <var>deviceInfo</var>.{{MediaDeviceInfo/groupId}}
-          is the same as the <a data-cite="!GETUSERMEDIA#def-mediadeviceinfo-groupId">groupId</a>
-          of any microphone in <var>microphoneList</var>,
+          <p>If [=microphone information can be exposed=] on <var>mediaDevices</var> is <code>true</code>,
           return <code>true</code>.</p>
         </li>
         <li>
