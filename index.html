@@ -80,11 +80,14 @@
             steps:</p>
             <ol class="method-algorithm">
               <li>
-                <p>Let <var>document</var> be the
+                <p>Let <var>globalObject</var> be the
                 <a data-cite="!HTML/webappapis.html#current-settings-object">
                 current settings object</a>'s
                 <a data-cite="!HTML/webappapis.html#concept-relevant-global">
-                relevant global object</a>'s
+                relevant global object</a>.</p>
+              </li>
+              <li>
+                <p>Let <var>document</var> be <var>globalObject</var>'s
                 <a data-cite="!HTML/window-object.html#concept-document-window">
                 associated <code>Document</code></a>.</p>
               </li>
@@ -96,6 +99,13 @@
                 promise rejected with a new {{DOMException}}
                 whose name is {{NotAllowedError}}.
                 </p>
+              </li>
+
+              <li>
+                <p>If <var>globalObject</var> does not have [=transient activation=],
+                the user agent MAY return a promise <a>rejected</a> with a
+                {{DOMException}} object whose {{DOMException/name}} attribute has
+                the value {{InvalidStateError}}.</p>
               </li>
               <li>
                 <p>Let <var>element</var> be the {{HTMLMediaElement}}
